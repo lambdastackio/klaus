@@ -1,0 +1,35 @@
+[package]
+name = "lsiohttps"
+version = "0.1.2"
+authors = ["Chris Jones"]
+license = "Apache-2.0"
+readme = "README.md"
+keywords = ["http", "https", "ceph"]
+repository = "https://github.com/lambdastackio/lsiohttps"
+homepage = "https://lambdastackio.github.io/lsiohttps/lsiohttps"
+documentation = "https://lambdastackio.github.io/lsiohttps/lsiohttps"
+description = """
+HTTPs Server for the LSIO projects to use.
+"""
+
+[dependencies]
+lsio = "0.1"
+aws-sdk-rust = "0.1"
+futures = "0.1"
+#httparse = "1"
+log = "0.3"
+net2 = "0.2"
+time = "0.1"
+clap = "2"
+url = "1"
+#filetime = "0"
+toml = "0.2"
+term = "0.4"
+num_cpus = "1"
+#mime = "0"
+regex = "0.1"
+tokio-core = "0"
+tokio-http2 = { path = "../tokio-http2" }
+tokio-proto = { git = "https://github.com/tokio-rs/tokio-proto" }
+tokio-service = { git = "https://github.com/tokio-rs/tokio-service" }
+pretty_env_logger = { git = "https://github.com/seanmonstar/pretty-env-logger" }
