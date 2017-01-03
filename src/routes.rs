@@ -16,8 +16,9 @@
 // use hyper::server::{Request, Response};
 // use hyper::{Get, Post, StatusCode};
 
-use tokio_http2::http::{Request, Response};
-use tokio_http2::Method as Method;
+use tokio_http2::http::{Request, Response, Http};
+// use tokio_http2::server::{Request, Response};
+// use tokio_http2::Method as Method;
 use tokio_http2::StatusCode;
 
 use verbs::*;
@@ -25,18 +26,23 @@ use verbs::*;
 pub fn routes(req: Request) -> Response {
     match req.method() {
         "GET" => {
+        // &Method::Get => {
             get::route(req, "public".to_string())
         },
         "POST" => {
+        // &Method::Post => {
             post::route(req)
         },
         "PUT" => {
+        // &Method::Put => {
             put::route(req)
         },
         "DELETE" => {
+        // &Method::Delete => {
             delete::route(req)
         },
         "HEAD" => {
+        // &Method::Head => {
             head::route(req)
         },
         _ => {

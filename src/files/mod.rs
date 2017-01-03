@@ -20,10 +20,7 @@ use std::fs::File;
 use std::path::Path;
 use std::str::FromStr;
 
-// use hyper::Body;
-// use hyper::header::{ContentLength, ContentType};
-// use hyper::mime::{Mime, TopLevel, SubLevel};
-use tokio_http2::{ContentType, ContentLength, Body};
+use tokio_http2::{Body, ContentType, ContentLength};
 
 #[derive(Debug)]
 pub struct FileBody {
@@ -55,19 +52,19 @@ pub fn read(path: &str) -> Result<FileBody, io::Error> {
         Some(s) => {
             ext = s.to_str().unwrap_or("").to_string();
             match s.to_str() {
-                Some("bmp") => content_type = "image/bmp", //ContentType(mime!(Image/Bmp));
+                Some("bmp") => content_type = "image/bmp", //ContentType(mime!(Image/Bmp)),
                 Some("css") => content_type = "text/css", //ContentType(mime!(Text/Css)), //; Charset=Utf8)),
-                Some("gif") => content_type = "image/gif", //ContentType(mime!(Image/Gif));
+                Some("gif") => content_type = "image/gif", //ContentType(mime!(Image/Gif)),
                 Some("html") => content_type = "text/html", //ContentType(mime!(Text/Html; Charset=Utf8)),
                 Some("ico") => content_type = "image/x-icon", //ContentType(Mime::from_str("image/x-icon").unwrap()),
                 Some("js") => content_type = "application/javascript", //ContentType(mime!(Application/Javascript)),
                 Some("json") => content_type = "application/json", //ContentType(mime!(Application/Json)),
-                Some("jpg") | Some("jpeg") => content_type = "image/jpeg", //ContentType(mime!(Image/Jpeg));
+                Some("jpg") | Some("jpeg") => content_type = "image/jpeg", //ContentType(mime!(Image/Jpeg)),
                 Some("mp4") | Some("mpeg") => content_type = "video/mp4", //ContentType(mime!(Video/Mp4)),
-                Some("png") => content_type = "image/png", //ContentType(mime!(Image/Png));
+                Some("png") => content_type = "image/png", //ContentType(mime!(Image/Png)),
                 Some("txt") => content_type = "text/plain", //ContentType(mime!(Text/Plain; Charset=Utf8)),
                 Some("xml") => content_type = "text/xml", //ContentType(mime!(Text/Xml; Charset=Utf8)),
-                None | Some(&_) => content_type = "application/octetstream", //ContentType(mime!(Application/OctetStream));
+                None | Some(&_) => content_type = "application/octetstream", //ContentType(mime!(Application/OctetStream)),
             }
         },
         None => {
@@ -79,7 +76,9 @@ pub fn read(path: &str) -> Result<FileBody, io::Error> {
     let mut body = Body::new();
 
     match file.read_to_end(&mut body) {
-        Ok(len) => {content_length = body.len() as u64},
+        Ok(len) => {
+            content_length = len as u64;
+        },
         Err(e) => {
             return Err(e);
         }

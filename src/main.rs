@@ -27,15 +27,17 @@ extern crate pretty_env_logger;
 extern crate url;
 //extern crate filetime;
 extern crate toml;
+extern crate rustc_serialize;
 #[macro_use] extern crate log;
 #[macro_use] extern crate clap;
-//#[macro_use] extern crate mime;
+#[macro_use] extern crate mime;
 #[macro_use] extern crate lsio;
 extern crate aws_sdk_rust;
 
 extern crate tokio_http2;
 extern crate tokio_proto;
 extern crate tokio_service;
+extern crate tokio_core;
 
 use std::io;
 use std::env;
@@ -46,8 +48,10 @@ use std::time::Duration;
 use futures::future;
 use tokio_http2 as http;
 use tokio_http2::http::{Request, Response, Http};
+// use tokio_http2::server::{Server, /*Service,*/ Request, Response};
 use tokio_proto::TcpServer;
 use tokio_service::Service;
+use tokio_core::net::TcpStream;
 
 use clap::Shell;
 use url::Url;
@@ -77,25 +81,28 @@ mod files;
 static DEFAULT_USER_AGENT: &'static str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
 // Make generic so as to be easier to create new servers...
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 struct ServiceCall;
 
 impl Service for ServiceCall {
     type Request = Request;
     type Response = Response;
-    //type Error = http::Error;
     type Error = io::Error;
-    // type Future = ::futures::Finished<Response, http::Error>;
     type Future = future::Ok<Response, io::Error>; //http::Error>;
+    // type Error = http::Error;
+    // type Future = ::futures::Finished<Response, http::Error>;
 
     fn call(&mut self, req: Request) -> Self::Future {
 
         // println!("{:#?}", req);
+
         // static mut gc: u16 = 1;
         // unsafe {
         //     println!("{}", gc);
         //     gc += 1;
         // }
+
+        // println!("{:?}", req.payload());
 
         future::ok(routes(req))
         // ::futures::finished(routes(req))
@@ -214,11 +221,8 @@ fn main() {
     //
     // let mut s3client = S3Client::new(provider, endpoint);
 
-    // let server = Server::http(&format!("{}:{}", ip, port).parse().unwrap()).unwrap();
-    // let (listening, server) = server.standalone(|| Ok(Lsiohttps)).unwrap();
-    // server.run();
-
-    let addr = "0.0.0.0:8080".parse().unwrap();
+    let addr: &str = &format!("{}:{}", ip, port);
+    let addr = addr.parse().unwrap();
     println!("{} - listening on http://{}", app, addr);
 
     let mut srv = TcpServer::new(Http, addr);

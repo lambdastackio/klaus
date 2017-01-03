@@ -1,31 +1,41 @@
 <!doctype html>
-<html lang="en">
-  <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="favicon.ico">
-
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Latest compiled and minified CSS -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"> -->
-    <!-- Optional theme -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"> -->
-
-    <!-- Self contained model -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/css/fonts.css">
-
-    <title>lsioAdmin | Dashboard</title>
-
+<html lang="en" class=" js no-touch no-android chrome no-firefox no-iemobile no-ie no-ie10 no-ie11 no-ios no-ios7 ipad">
+    <head>
+    <title>React Admin v1.2.0</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/dist/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="/dist/css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="/dist/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="/dist/css/react-admin.css" type="text/css" />
+    <link href="/dist/css/chartist.css" rel="stylesheet">
+    <link href="/dist/css/draft.css" rel="stylesheet">
+    <link href="/dist/css/rcslider.css" rel="stylesheet">
+    <link href="/dist/css/react-datepicker.css" rel="stylesheet">
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcFNRi76eAdxQKB3wdKigoMisNpSYNoM0&libraries=geometry,places,visualization">
+    </script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+      #content {
+        display: block;
+      }
+    </style>
+    <script>
+      window.config = {
+        backend : 'http://localhost:8000/',
+        appId : '5765521282941492bd81ed90',
+        serverURL : 'http://localhost:8000/',
+        cookieIdentifier : 'X-accesstoken-dev'
+      }
+    </script>
   </head>
   <body>
-
-    <div id="root" style="background: green">Hello world! - LSIO</div>
-    <!-- <img src="smiley.gif" alt="HTML tutorial"> -->
-    <!-- <script src="favicon.js"></script> -->
-
+  <section class="vbox" id="wrapperContainer"></section>
   </body>
+  <script src="/dist/js/lib.js"></script>
+  <!-- <script src="/static/bundle.js"></script> -->
+  <script src="/dist/js/bundle.js"></script>
+
 </html>
