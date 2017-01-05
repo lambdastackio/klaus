@@ -28,6 +28,7 @@ extern crate url;
 //extern crate filetime;
 extern crate toml;
 extern crate rustc_serialize;
+extern crate multipart;
 #[macro_use] extern crate log;
 #[macro_use] extern crate clap;
 #[macro_use] extern crate mime;
@@ -46,9 +47,7 @@ use std::convert::AsRef;
 use std::time::Duration;
 
 use futures::future;
-use tokio_http2 as http;
 use tokio_http2::http::{Request, Response, Http};
-// use tokio_http2::server::{Server, /*Service,*/ Request, Response};
 use tokio_proto::TcpServer;
 use tokio_service::Service;
 use tokio_core::net::TcpStream;
@@ -65,17 +64,15 @@ use aws_sdk_rust::aws::common::region::Region;
 use aws_sdk_rust::aws::common::credentials::{AwsCredentialsProvider, DefaultCredentialsProviderSync};
 use aws_sdk_rust::aws::common::request::DispatchSignedRequest;
 
-use verbs::*;
-use files::*;
-
 use routes::routes;
 
 mod cli;
 //mod router;
 mod config;
 mod routes;
-mod verbs;
+mod http;
 mod files;
+mod api;
 
 // Used for outbound calls.
 static DEFAULT_USER_AGENT: &'static str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
@@ -101,8 +98,6 @@ impl Service for ServiceCall {
         //     println!("{}", gc);
         //     gc += 1;
         // }
-
-        // println!("{:?}", req.payload());
 
         future::ok(routes(req))
         // ::futures::finished(routes(req))

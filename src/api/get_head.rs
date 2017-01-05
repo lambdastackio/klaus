@@ -12,28 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::io::{Error, ErrorKind};
+use std::{io, slice, str, fmt};
+
 use tokio_http2::http::{Request, Response, Http};
 use tokio_http2::StatusCode;
 
-use http::*;
+use files::*;
 
-pub fn routes(req: Request) -> Response {
-    match req.method() {
-        "GET" | "HEAD" => {
-            // GET and HEAD are handled here...
-            get_head::route(req, "public".to_string())
-        },
-        "POST" => {
-            println!("{:?}", "posting.....");
-            println!("\n\n{:?}", req.content_type());
-            post::route(req)
-        },
-        "PUT" => {
-            //NB: Test with post method for now
-            post::route(req)
-        },
-        "DELETE" => {
-            delete::route(req)
+pub fn route(req: Request, prefix: &str, header: &str) -> Response {
+    match req.path() {
+        "/api/get/something" => {
+            let req = req.clone();
+            api(req, prefix, header)
         },
         _ => {
             Response::new()
@@ -42,4 +33,17 @@ pub fn routes(req: Request) -> Response {
                 .with_status(StatusCode::NotImplemented)
         }
     }
+}
+
+// NOTE: Create a function for each route
+fn api(req: Request, prefix: &str, header: &str) -> Response {
+    println!("{:?}", req.path());
+    println!("{:?}", req.query());
+    println!("{:?}", req.urldecode(req.payload().unwrap_or("".as_bytes())).unwrap());
+    //req.urldecode(str::from_utf8(req.payload().unwrap_or("".as_bytes())).unwrap_or("")));
+
+    Response::new()
+        .with_header("Server", "lsioHTTPS")
+        .with_header("Content-Length", "0")
+        .with_status(StatusCode::NotImplemented)
 }

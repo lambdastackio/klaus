@@ -28,6 +28,7 @@ num_cpus = "1"
 mime = "0"
 regex = "0.1"
 rustc-serialize = "0"
+multipart = "0"
 tokio-core = "0"
 tokio-http2 = { path = "../tokio-http2" }
 tokio-proto = { path = "../tokio-proto" } #git = "https://github.com/tokio-rs/tokio-proto" }

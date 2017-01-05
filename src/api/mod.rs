@@ -12,16 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use tokio_http2::http::{Request, Response, Http};
-// use tokio_http2::server::{Request, Response};
-// use tokio_http2::Method as Method;
-use tokio_http2::StatusCode;
-
-pub fn route(req: Request) -> Response {
-    match req.path() {
-        _ => {
-            Response::new()
-                // .with_status(StatusCode::NotFound)
-        }
-    }
-}
+pub mod get_head;

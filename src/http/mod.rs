@@ -13,7 +13,6 @@
 // limitations under the License.
 
 pub mod delete;
-pub mod get;
-pub mod head;
+pub mod get_head;
 pub mod post;
 pub mod put;

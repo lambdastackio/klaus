@@ -13,17 +13,22 @@
 // limitations under the License.
 
 use std::{io, slice, str, fmt};
+use std::fs::File;
+use std::io::{Error, Read};
 
 use tokio_http2::http::{Request, Response, Http};
 use tokio_http2::StatusCode;
 use rustc_serialize::json::*;
 use rustc_serialize::base64::*;
 
+use multipart::server::{Multipart, Entries, SaveResult};
+
 pub fn route(req: Request) -> Response {
     match req.path() {
         "/admin/settings" => {
             post(req)
         },
+        // NOTE: If the x-lambda-api header is set then route to the api::post
         _ => Response::new().with_status(StatusCode::MethodNotAllowed),
     }
 }
@@ -52,6 +57,57 @@ fn post(req: Request) -> Response {
                 },
                 None => {},
             }
+        },
+        "application/x-www-form-urlencoded" => {
+            match req.payload() {
+                Some(payload) => {
+                    has_payload = true;
+                    // println!("{:?}", req.urldecode(req.payload().unwrap_or("".as_bytes())));
+                    //println!("{}", str::from_utf8(payload).unwrap_or(""));
+                },
+                None => {},
+            }
+        },
+        "multipart/form-data" => {
+
+            println!("{:?}", req.content_type_all());
+            println!("{:?}", req.content_type_metadata());
+
+            match Multipart::from_request(req) {
+                Ok(mut multipart) => {
+                    // Fetching all data and processing it.
+                    // save_all() reads the request fully, parsing all fields and saving all files
+                    // in a new temporary directory under the OS temporary directory.
+                    match multipart.save_all() {
+                        SaveResult::Full(entries) => {
+                            //process_entries(entries)
+                            println!("{:?}", "YES...");
+                            println!("{:?}", entries);
+                        },
+                        SaveResult::Partial(entries, error) => {
+                            // try!(process_entries(entries));
+                            // Err(error)
+                            println!("{:?}", "YES...");
+                            println!("Partial - {:?}", entries);
+                        }
+                        SaveResult::Error(error) => {
+                            // Err(error)
+                            println!("{:?}", "YES...");
+                            println!("Error - {:?}", error);
+                        },
+                    }
+                }
+                Err(e) => {
+                    println!("{:?}", e);
+                }
+            }
+
+            // match req.payload() {
+            //     Some(payload) => {
+            //         has_payload = true;
+            //     },
+            //     None => {},
+            // }
         },
         _ => {
             match req.payload() {
