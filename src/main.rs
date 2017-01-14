@@ -21,7 +21,7 @@
 // NOTE: This attribute only needs to be set once.
 #![doc(html_logo_url = "https://lambdastackio.github.io/static/images/lambdastack-200x200.png",
        html_favicon_url = "https://lambdastackio.github.io/static/images/favicon.ico",
-       html_root_url = "https://lambdastackio.github.io/lsiohttps/lsiohttps/index.html")]
+       html_root_url = "https://lambdastackio.github.io/httpd/httpd/index.html")]
 
 extern crate futures;
 extern crate num_cpus;

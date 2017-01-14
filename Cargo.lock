@@ -1,6 +1,6 @@
 [root]
-name = "lsiohttps"
-version = "0.1.3"
+name = "httpd"
+version = "0.1.4"
 dependencies = [
  "aws-sdk-rust 0.1.39 (registry+https://github.com/rust-lang/crates.io-index)",
  "clap 2.19.3 (registry+https://github.com/rust-lang/crates.io-index)",
