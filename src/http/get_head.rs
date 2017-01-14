@@ -14,8 +14,8 @@
 
 use std::io::{Error, ErrorKind};
 
-use tokio_http2::http::{Request, Response, Http};
-use tokio_http2::StatusCode;
+use tokio_http2::http::{Request, Response, HttpProto};
+use tokio_http2::{StatusCode, Method};
 
 use files::*;
 use api::get_head;
@@ -43,7 +43,7 @@ pub fn route(req: Request, prefix: String) -> Response {
                 None => {
                     match read(&format!("{}{}", prefix, file_path)) {
                         Ok(file_body) => {
-                            if verb == "GET" {
+                            if verb == Method::Get {
                                 Response::new()
                                     .with_header("Server", "lsioHTTPS")
                                     .with_header("Content-Length", &file_body.content_length.to_string())
@@ -78,11 +78,11 @@ pub fn route(req: Request, prefix: String) -> Response {
     }
 }
 
-fn load_default(prefix: String, verb: &str) -> Response {
+fn load_default(prefix: String, verb: Method) -> Response {
     // NOTE: Maybe add a list of acceptable index files in the config and check them in order instead of the static `index.html`
     match read(&format!("{}{}", prefix, "/index.html")) {
         Ok(file_body) => {
-            if verb == "GET" {
+            if verb == Method::Get {
                 Response::new()
                     .with_header("Server", "lsioHTTPS")
                     .with_header("Content-Length", &file_body.content_length.to_string())

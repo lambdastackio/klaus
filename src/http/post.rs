@@ -13,27 +13,27 @@
 // limitations under the License.
 
 use std::{io, slice, str, fmt};
-use std::fs::File;
+use std::fs::{File, copy};
 use std::io::{Error, Read};
 
-use tokio_http2::http::{Request, Response, Http};
+use tokio_http2::http::{Request, Response, HttpProto};
 use tokio_http2::StatusCode;
 use rustc_serialize::json::*;
 use rustc_serialize::base64::*;
 
 use multipart::server::{Multipart, Entries, SaveResult};
 
-pub fn route(req: Request) -> Response {
+pub fn route(req: Request, path: &str) -> Response {
     match req.path() {
         "/admin/settings" => {
-            post(req)
+            post(req, path)
         },
         // NOTE: If the x-lambda-api header is set then route to the api::post
         _ => Response::new().with_status(StatusCode::MethodNotAllowed),
     }
 }
 
-fn post(req: Request) -> Response {
+fn post(req: Request, path: &str) -> Response {
     let mut has_payload: bool = false;
 
     match req.content_type() {
@@ -69,10 +69,6 @@ fn post(req: Request) -> Response {
             }
         },
         "multipart/form-data" => {
-
-            println!("{:?}", req.content_type_all());
-            println!("{:?}", req.content_type_metadata());
-
             match Multipart::from_request(req) {
                 Ok(mut multipart) => {
                     // Fetching all data and processing it.
@@ -80,34 +76,20 @@ fn post(req: Request) -> Response {
                     // in a new temporary directory under the OS temporary directory.
                     match multipart.save_all() {
                         SaveResult::Full(entries) => {
-                            //process_entries(entries)
-                            println!("{:?}", "YES...");
-                            println!("{:?}", entries);
+                            has_payload = true;
+                            process_entries(entries, path);
                         },
                         SaveResult::Partial(entries, error) => {
-                            // try!(process_entries(entries));
-                            // Err(error)
-                            println!("{:?}", "YES...");
-                            println!("Partial - {:?}", entries);
+                            // Allow to fail below but contains some of the files.
+                            process_entries(entries, path);
                         }
-                        SaveResult::Error(error) => {
-                            // Err(error)
-                            println!("{:?}", "YES...");
-                            println!("Error - {:?}", error);
-                        },
+                        SaveResult::Error(error) => {},
                     }
                 }
                 Err(e) => {
                     println!("{:?}", e);
                 }
             }
-
-            // match req.payload() {
-            //     Some(payload) => {
-            //         has_payload = true;
-            //     },
-            //     None => {},
-            // }
         },
         _ => {
             match req.payload() {
@@ -130,5 +112,21 @@ fn post(req: Request) -> Response {
             .with_header("Server", "lsioHTTPS")
             .with_header("Content-Length", "0")
             .with_status(StatusCode::BadRequest)
+    }
+}
+
+fn process_entries(entries: Entries, path: &str) {
+    // NOTE: What about fields??????
+    for (name, field) in entries.fields {
+        println!(r#"Field "{}": "{}""#, name, field);
+    }
+
+    for (name, savedfile) in entries.files {
+        let filename = match savedfile.filename {
+            Some(s) => s,
+            None => "None".into()
+        };
+
+        let result_len = copy(savedfile.path, &format!("{}/{}", path, filename));
     }
 }

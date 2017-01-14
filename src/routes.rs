@@ -12,27 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use tokio_http2::http::{Request, Response, Http};
-use tokio_http2::StatusCode;
+use tokio_http2::http::{Request, Response, HttpProto};
+use tokio_http2::{StatusCode, Method};
 
 use http::*;
 
 pub fn routes(req: Request) -> Response {
     match req.method() {
-        "GET" | "HEAD" => {
+        Method::Get | Method::Head => {
             // GET and HEAD are handled here...
             get_head::route(req, "public".to_string())
         },
-        "POST" => {
-            println!("{:?}", "posting.....");
-            println!("\n\n{:?}", req.content_type());
-            post::route(req)
+        Method::Post => {
+            post::route(req, "public/uploads")
         },
-        "PUT" => {
+        Method::Put => {
             //NB: Test with post method for now
-            post::route(req)
+            post::route(req, "public/uploads")
         },
-        "DELETE" => {
+        Method::Delete => {
             delete::route(req)
         },
         _ => {

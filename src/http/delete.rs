@@ -14,7 +14,7 @@
 
 use std::{io, slice, str, fmt};
 
-use tokio_http2::http::{Request, Response, Http};
+use tokio_http2::http::{Request, Response, HttpProto};
 use tokio_http2::StatusCode;
 use rustc_serialize::json::*;
 use rustc_serialize::base64::*;

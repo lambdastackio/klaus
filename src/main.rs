@@ -15,6 +15,8 @@
 #![allow(unused_imports)]
 #![allow(unused_mut)]
 #![allow(unused_variables)]
+#![allow(unused_assignments)]
+#![allow(unused_must_use)]
 
 // NOTE: This attribute only needs to be set once.
 #![doc(html_logo_url = "https://lambdastackio.github.io/static/images/lambdastack-200x200.png",
@@ -29,10 +31,13 @@ extern crate url;
 extern crate toml;
 extern crate rustc_serialize;
 extern crate multipart;
+extern crate mime_guess;
 #[macro_use] extern crate log;
 #[macro_use] extern crate clap;
 #[macro_use] extern crate mime;
 #[macro_use] extern crate lsio;
+#[macro_use] extern crate slog;
+extern crate slog_term;
 extern crate aws_sdk_rust;
 
 extern crate tokio_http2;
@@ -47,10 +52,11 @@ use std::convert::AsRef;
 use std::time::Duration;
 
 use futures::future;
-use tokio_http2::http::{Request, Response, Http};
 use tokio_proto::TcpServer;
+// use tokio_http2::TcpServer;
 use tokio_service::Service;
 use tokio_core::net::TcpStream;
+use tokio_http2::http::{Request, Response, HttpProto};
 
 use clap::Shell;
 use url::Url;
@@ -65,9 +71,9 @@ use aws_sdk_rust::aws::common::credentials::{AwsCredentialsProvider, DefaultCred
 use aws_sdk_rust::aws::common::request::DispatchSignedRequest;
 
 use routes::routes;
+use slog::DrainExt;
 
 mod cli;
-//mod router;
 mod config;
 mod routes;
 mod http;
@@ -79,42 +85,49 @@ static DEFAULT_USER_AGENT: &'static str = concat!(env!("CARGO_PKG_NAME"), "/", e
 
 // Make generic so as to be easier to create new servers...
 #[derive(Clone, Copy, Debug)]
-struct ServiceCall;
+struct HttpService;
 
-impl Service for ServiceCall {
+// Could put this into service_fn closure later...
+impl Service for HttpService {
     type Request = Request;
     type Response = Response;
     type Error = io::Error;
-    type Future = future::Ok<Response, io::Error>; //http::Error>;
-    // type Error = http::Error;
-    // type Future = ::futures::Finished<Response, http::Error>;
+    type Future = future::Ok<Response, io::Error>;
 
-    fn call(&mut self, req: Request) -> Self::Future {
+    fn call(&self, mut req: Request) -> Self::Future {
 
-        // println!("{:#?}", req);
+        // Testing block begin...
+        // match req.remote_addr() {
+        //     Some(remote_addr) => println!("{}", remote_addr),
+        //     _ => println!("N/A"),
+        // }
+
+        // println!("{:?}", req);
 
         // static mut gc: u16 = 1;
         // unsafe {
         //     println!("{}", gc);
         //     gc += 1;
         // }
+        // Testing block end...
 
         future::ok(routes(req))
-        // ::futures::finished(routes(req))
     }
 }
 
 fn main() {
     pretty_env_logger::init();
+    let app = env!("CARGO_PKG_NAME");
+    let config_dir = "/etc/lsio";
+    let version = format!("{}", crate_version!());
+
+    let drain = slog_term::streamer().build().fuse();
+    let root_logger = slog::Logger::root(drain, o!("version" => version.clone()));
 
     let mut is_quiet: bool = false;
     let mut is_time: bool = false;
     let mut is_bench: bool = false;
     let mut is_bucket_virtual: bool = true;
-
-    let app = env!("CARGO_PKG_NAME");
-    let config_dir = "/etc/lsio";
-    let version = format!("{}", crate_version!());
 
     let matches = cli::build_cli(app, config_dir, &version).get_matches();
 
@@ -218,10 +231,11 @@ fn main() {
 
     let addr: &str = &format!("{}:{}", ip, port);
     let addr = addr.parse().unwrap();
-    println!("{} - listening on http://{}", app, addr);
+    // println!("{} - listening on http://{}", app, addr);
+    info!(root_logger, format!("Application started and listening at: {}", addr));
 
-    let mut srv = TcpServer::new(Http, addr);
+    let mut srv = TcpServer::new(HttpProto, addr);
+    // TODO: May want to add router to TcpServer by pulling in proto::TcpServer into our own in library
     srv.threads(num_cpus::get());
-
-    srv.serve(|| Ok(ServiceCall));
+    srv.serve(|| Ok(HttpService)); // Could do closure here...
 }

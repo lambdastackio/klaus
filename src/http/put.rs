@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use tokio_http2::http::{Request, Response, Http};
+#![allow(dead_code)]
+
+use tokio_http2::http::{Request, Response, HttpProto};
 // use tokio_http2::server::{Request, Response};
 // use tokio_http2::Method as Method;
 use tokio_http2::StatusCode;

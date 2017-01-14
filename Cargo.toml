@@ -1,6 +1,6 @@
 [package]
 name = "lsiohttps"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Chris Jones"]
 license = "Apache-2.0"
 readme = "README.md"
@@ -9,7 +9,7 @@ repository = "https://github.com/lambdastackio/lsiohttps"
 homepage = "https://lambdastackio.github.io/lsiohttps/lsiohttps"
 documentation = "https://lambdastackio.github.io/lsiohttps/lsiohttps"
 description = """
-HTTPs Server for the LSIO projects to use.
+HTTP Server for the LSIO projects that is built on Tokio Project.
 """
 
 [dependencies]
@@ -29,8 +29,13 @@ mime = "0"
 regex = "0.1"
 rustc-serialize = "0"
 multipart = "0"
+mime_guess = "1"
+slog = "*"
+slog-json = "*"
+slog-term = "*"
+slog-scope = "*"
 tokio-core = "0"
-tokio-http2 = { path = "../tokio-http2" }
-tokio-proto = { path = "../tokio-proto" } #git = "https://github.com/tokio-rs/tokio-proto" }
-tokio-service = { git = "https://github.com/tokio-rs/tokio-service" }
-pretty_env_logger = { git = "https://github.com/seanmonstar/pretty-env-logger" }
+tokio-http2 = "0" #{ path = "../tokio-http2" }
+tokio-proto = "0.1" #{ git = "https://github.com/tokio-rs/tokio-proto" }
+tokio-service = "0.1"
+pretty_env_logger = "0" #{ git = "https://github.com/seanmonstar/pretty-env-logger" }
