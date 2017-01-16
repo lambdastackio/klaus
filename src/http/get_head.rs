@@ -20,7 +20,7 @@ use tokio_http2::{StatusCode, Method};
 use files::*;
 use api::get_head;
 
-pub fn route(req: Request, prefix: String) -> Response {
+pub fn route(req: Request, base_path: String) -> Response {
     let verb = req.method();
 
     match req.path() {
@@ -31,17 +31,17 @@ pub fn route(req: Request, prefix: String) -> Response {
                 .with_status(StatusCode::NoContent)
         },
         "/" | "/index.html" => {
-            load_default(prefix, verb)
+            load_default(base_path, verb)
         },
         file_path => {
             match req.header("x-lambda-api") {
                 Some(header) => {
                     let req = req.clone();
                     // api::get_head
-                    get_head::route(req, &prefix, header)
+                    get_head::route(req, &base_path, header)
                 },
                 None => {
-                    match read(&format!("{}{}", prefix, file_path)) {
+                    match read(&format!("{}{}", base_path, file_path)) {
                         Ok(file_body) => {
                             if verb == Method::Get {
                                 Response::new()
@@ -63,7 +63,7 @@ pub fn route(req: Request, prefix: String) -> Response {
                             // determine a 404 error or show page source.
 
                             if e.kind() == ErrorKind::NotFound {
-                                load_default(prefix, verb)
+                                load_default(base_path, verb)
                              } else {
                                 Response::new()
                                     .with_header("Server", "lsioHTTPS")
@@ -78,9 +78,9 @@ pub fn route(req: Request, prefix: String) -> Response {
     }
 }
 
-fn load_default(prefix: String, verb: Method) -> Response {
+fn load_default(base_path: String, verb: Method) -> Response {
     // NOTE: Maybe add a list of acceptable index files in the config and check them in order instead of the static `index.html`
-    match read(&format!("{}{}", prefix, "/index.html")) {
+    match read(&format!("{}{}", base_path, "/index.html")) {
         Ok(file_body) => {
             if verb == Method::Get {
                 Response::new()

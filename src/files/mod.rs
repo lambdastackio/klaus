@@ -38,19 +38,24 @@ impl FileBody {
     }
 }
 
+// TODO: Pass in Logger
+
 pub fn read(path: &str) -> Result<FileBody, io::Error> {
     let mut file = match File::open(path) {
         Ok(file) => file,
         Err(e) => {
+            println!("{:?}", e);
             return Err(e);
         }
     };
 
     let mut content_length: ContentLength = 0;
-    // let mut ext = String::from("");
 
     let path2 = Path::new(path);
     let ext: String;
+
+    println!("read - {:?}", path2);
+
     match path2.extension() {
         Some(s) => ext = s.to_str().unwrap_or("").to_string(),
         None => ext = "".to_string(),
@@ -58,31 +63,6 @@ pub fn read(path: &str) -> Result<FileBody, io::Error> {
     let mime = guess_mime_type(path2);
     let content_type_string = mime.to_string();
     let content_type: &str = &content_type_string;
-
-    // match Path::new(path).extension() {
-    //     Some(s) => {
-    //         ext = s.to_str().unwrap_or("").to_string();
-    //         match s.to_str() {
-    //             Some("bmp") => content_type = "image/bmp", //ContentType(mime!(Image/Bmp)),
-    //             Some("css") => content_type = "text/css", //ContentType(mime!(Text/Css)), //; Charset=Utf8)),
-    //             Some("gif") => content_type = "image/gif", //ContentType(mime!(Image/Gif)),
-    //             Some("html") => content_type = "text/html", //ContentType(mime!(Text/Html; Charset=Utf8)),
-    //             Some("ico") => content_type = "image/x-icon", //ContentType(Mime::from_str("image/x-icon").unwrap()),
-    //             Some("js") => content_type = "application/javascript", //ContentType(mime!(Application/Javascript)),
-    //             Some("json") => content_type = "application/json", //ContentType(mime!(Application/Json)),
-    //             Some("jpg") | Some("jpeg") => content_type = "image/jpeg", //ContentType(mime!(Image/Jpeg)),
-    //             Some("mp4") | Some("mpeg") => content_type = "video/mp4", //ContentType(mime!(Video/Mp4)),
-    //             Some("png") => content_type = "image/png", //ContentType(mime!(Image/Png)),
-    //             Some("txt") => content_type = "text/plain", //ContentType(mime!(Text/Plain; Charset=Utf8)),
-    //             Some("xml") => content_type = "text/xml", //ContentType(mime!(Text/Xml; Charset=Utf8)),
-    //             None | Some(&_) => content_type = "application/octetstream", //ContentType(mime!(Application/OctetStream)),
-    //         }
-    //     },
-    //     None => {
-    //         ext = "".to_string();
-    //         content_type = "application/octetstream"; //ContentType(mime!(Application/OctetStream));
-    //     },
-    // }
 
     let mut body = Body::new();
 

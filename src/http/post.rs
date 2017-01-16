@@ -23,18 +23,19 @@ use rustc_serialize::base64::*;
 
 use multipart::server::{Multipart, Entries, SaveResult};
 
-pub fn route(req: Request, path: &str) -> Response {
+pub fn route(req: Request, base_path: String) -> Response {
     match req.path() {
         "/admin/settings" => {
-            post(req, path)
+            post(req, base_path)
         },
         // NOTE: If the x-lambda-api header is set then route to the api::post
         _ => Response::new().with_status(StatusCode::MethodNotAllowed),
     }
 }
 
-fn post(req: Request, path: &str) -> Response {
+fn post(req: Request, base_path: String) -> Response {
     let mut has_payload: bool = false;
+    let mut content_lenth: u64 = 0;
 
     match req.content_type() {
         "application/json" => {
@@ -77,11 +78,11 @@ fn post(req: Request, path: &str) -> Response {
                     match multipart.save_all() {
                         SaveResult::Full(entries) => {
                             has_payload = true;
-                            process_entries(entries, path);
+                            process_entries(entries, base_path);
                         },
                         SaveResult::Partial(entries, error) => {
                             // Allow to fail below but contains some of the files.
-                            process_entries(entries, path);
+                            process_entries(entries, base_path);
                         }
                         SaveResult::Error(error) => {},
                     }
@@ -105,21 +106,23 @@ fn post(req: Request, path: &str) -> Response {
     if has_payload {
         Response::new()
             .with_header("Server", "lsioHTTPS")
-            .with_header("Content-Length", "0")
+            .with_header("Content-Length", &format!("{}", content_lenth))
             .with_status(StatusCode::Ok)
     } else {
         Response::new()
             .with_header("Server", "lsioHTTPS")
-            .with_header("Content-Length", "0")
+            .with_header("Content-Length", &format!("{}", content_lenth))
             .with_status(StatusCode::BadRequest)
     }
 }
 
-fn process_entries(entries: Entries, path: &str) {
+fn process_entries(entries: Entries, base_path: String) -> u64 {
     // NOTE: What about fields??????
     for (name, field) in entries.fields {
         println!(r#"Field "{}": "{}""#, name, field);
     }
+
+    let mut result_len: u64 = 0;
 
     for (name, savedfile) in entries.files {
         let filename = match savedfile.filename {
@@ -127,6 +130,11 @@ fn process_entries(entries: Entries, path: &str) {
             None => "None".into()
         };
 
-        let result_len = copy(savedfile.path, &format!("{}/{}", path, filename));
+        match copy(savedfile.path, &format!("{}/{}", base_path, filename)) {
+            Ok(len) => result_len += len,
+            Err(e) => {},
+        }
     }
+
+    return result_len
 }

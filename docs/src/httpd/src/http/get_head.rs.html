@@ -172,7 +172,7 @@
 <span class='kw'>use</span> <span class='ident'>files</span>::<span class='op'>*</span>;
 <span class='kw'>use</span> <span class='ident'>api</span>::<span class='ident'>get_head</span>;
 
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>route</span>(<span class='ident'>req</span>: <span class='ident'>Request</span>, <span class='ident'>prefix</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='ident'>Response</span> {
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>route</span>(<span class='ident'>req</span>: <span class='ident'>Request</span>, <span class='ident'>base_path</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='ident'>Response</span> {
     <span class='kw'>let</span> <span class='ident'>verb</span> <span class='op'>=</span> <span class='ident'>req</span>.<span class='ident'>method</span>();
 
     <span class='kw'>match</span> <span class='ident'>req</span>.<span class='ident'>path</span>() {
@@ -183,17 +183,17 @@
                 .<span class='ident'>with_status</span>(<span class='ident'>StatusCode</span>::<span class='ident'>NoContent</span>)
         },
         <span class='string'>&quot;/&quot;</span> <span class='op'>|</span> <span class='string'>&quot;/index.html&quot;</span> <span class='op'>=&gt;</span> {
-            <span class='ident'>load_default</span>(<span class='ident'>prefix</span>, <span class='ident'>verb</span>)
+            <span class='ident'>load_default</span>(<span class='ident'>base_path</span>, <span class='ident'>verb</span>)
         },
         <span class='ident'>file_path</span> <span class='op'>=&gt;</span> {
             <span class='kw'>match</span> <span class='ident'>req</span>.<span class='ident'>header</span>(<span class='string'>&quot;x-lambda-api&quot;</span>) {
                 <span class='prelude-val'>Some</span>(<span class='ident'>header</span>) <span class='op'>=&gt;</span> {
                     <span class='kw'>let</span> <span class='ident'>req</span> <span class='op'>=</span> <span class='ident'>req</span>.<span class='ident'>clone</span>();
                     <span class='comment'>// api::get_head</span>
-                    <span class='ident'>get_head</span>::<span class='ident'>route</span>(<span class='ident'>req</span>, <span class='kw-2'>&amp;</span><span class='ident'>prefix</span>, <span class='ident'>header</span>)
+                    <span class='ident'>get_head</span>::<span class='ident'>route</span>(<span class='ident'>req</span>, <span class='kw-2'>&amp;</span><span class='ident'>base_path</span>, <span class='ident'>header</span>)
                 },
                 <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> {
-                    <span class='kw'>match</span> <span class='ident'>read</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}{}&quot;</span>, <span class='ident'>prefix</span>, <span class='ident'>file_path</span>)) {
+                    <span class='kw'>match</span> <span class='ident'>read</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}{}&quot;</span>, <span class='ident'>base_path</span>, <span class='ident'>file_path</span>)) {
                         <span class='prelude-val'>Ok</span>(<span class='ident'>file_body</span>) <span class='op'>=&gt;</span> {
                             <span class='kw'>if</span> <span class='ident'>verb</span> <span class='op'>==</span> <span class='ident'>Method</span>::<span class='ident'>Get</span> {
                                 <span class='ident'>Response</span>::<span class='ident'>new</span>()
@@ -215,7 +215,7 @@
                             <span class='comment'>// determine a 404 error or show page source.</span>
 
                             <span class='kw'>if</span> <span class='ident'>e</span>.<span class='ident'>kind</span>() <span class='op'>==</span> <span class='ident'>ErrorKind</span>::<span class='ident'>NotFound</span> {
-                                <span class='ident'>load_default</span>(<span class='ident'>prefix</span>, <span class='ident'>verb</span>)
+                                <span class='ident'>load_default</span>(<span class='ident'>base_path</span>, <span class='ident'>verb</span>)
                              } <span class='kw'>else</span> {
                                 <span class='ident'>Response</span>::<span class='ident'>new</span>()
                                     .<span class='ident'>with_header</span>(<span class='string'>&quot;Server&quot;</span>, <span class='string'>&quot;lsioHTTPS&quot;</span>)
@@ -230,9 +230,9 @@
     }
 }
 
-<span class='kw'>fn</span> <span class='ident'>load_default</span>(<span class='ident'>prefix</span>: <span class='ident'>String</span>, <span class='ident'>verb</span>: <span class='ident'>Method</span>) <span class='op'>-&gt;</span> <span class='ident'>Response</span> {
+<span class='kw'>fn</span> <span class='ident'>load_default</span>(<span class='ident'>base_path</span>: <span class='ident'>String</span>, <span class='ident'>verb</span>: <span class='ident'>Method</span>) <span class='op'>-&gt;</span> <span class='ident'>Response</span> {
     <span class='comment'>// NOTE: Maybe add a list of acceptable index files in the config and check them in order instead of the static `index.html`</span>
-    <span class='kw'>match</span> <span class='ident'>read</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}{}&quot;</span>, <span class='ident'>prefix</span>, <span class='string'>&quot;/index.html&quot;</span>)) {
+    <span class='kw'>match</span> <span class='ident'>read</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}{}&quot;</span>, <span class='ident'>base_path</span>, <span class='string'>&quot;/index.html&quot;</span>)) {
         <span class='prelude-val'>Ok</span>(<span class='ident'>file_body</span>) <span class='op'>=&gt;</span> {
             <span class='kw'>if</span> <span class='ident'>verb</span> <span class='op'>==</span> <span class='ident'>Method</span>::<span class='ident'>Get</span> {
                 <span class='ident'>Response</span>::<span class='ident'>new</span>()

@@ -18,17 +18,19 @@ use tokio_http2::{StatusCode, Method};
 use http::*;
 
 pub fn routes(req: Request) -> Response {
+    let base_path = req.clone().base_path;
+
     match req.method() {
         Method::Get | Method::Head => {
             // GET and HEAD are handled here...
-            get_head::route(req, "public".to_string())
+            get_head::route(req, base_path)
         },
         Method::Post => {
-            post::route(req, "public/uploads")
+            post::route(req, format!("{}/uploads", base_path)) // NOTE: Change this hardcode of upload after testing...
         },
         Method::Put => {
             //NB: Test with post method for now
-            post::route(req, "public/uploads")
+            post::route(req, format!("{}/uploads", base_path)) // NOTE: Change this hardcode of upload after testing...
         },
         Method::Delete => {
             delete::route(req)

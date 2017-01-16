@@ -283,6 +283,89 @@
 <span id="239">239</span>
 <span id="240">240</span>
 <span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2016 LambdaStack All rights reserved.</span>
 <span class='comment'>//</span>
@@ -309,6 +392,34 @@
        <span class='ident'>html_favicon_url</span> <span class='op'>=</span> <span class='string'>&quot;https://lambdastackio.github.io/static/images/favicon.ico&quot;</span>,
        <span class='ident'>html_root_url</span> <span class='op'>=</span> <span class='string'>&quot;https://lambdastackio.github.io/httpd/httpd/index.html&quot;</span>)]</span>
 
+<span class='doccomment'>//! HTTP/1.1:</span>
+<span class='doccomment'>//! This crate is a full multithreaded Async I/O HTTPd Server that support multipart uploads, Pipelining and more.</span>
+<span class='doccomment'>//! It can be used to implement your own HTTP server that allows for Rust Lambda like handlers.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! It can be used &quot;out of the box&quot; as a drop in replacement for a typical Web Server that handles</span>
+<span class='doccomment'>//! static content or Single Page Applications like Angular and ReactJS.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! There are many additional features being added including the following:</span>
+<span class='doccomment'>//!   1. TLS</span>
+<span class='doccomment'>//!   2. HTTP/2 with Multiplexing</span>
+<span class='doccomment'>//!   3. Web Socket protocol upgrading</span>
+<span class='doccomment'>//!   4. Well defined configuration system - [Done]</span>
+<span class='doccomment'>//!   5. More enhanced logging - [Done]</span>
+<span class='doccomment'>//!   6. Builtin AWS/Ceph S3 interfaces - [Plumbing done]</span>
+<span class='doccomment'>//!   7. gRPC/Protobuf</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Roadmap - The longer term goal is to create an application base that can also act as agent with</span>
+<span class='doccomment'>//! the ability to move to different machines and reconfigure itself for a given role as needed.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Base Path - The default of this `public` which means to look for a sub-directory called public</span>
+<span class='doccomment'>//! under the directory where this application is located. Please change this passed in CLI value of -f</span>
+<span class='doccomment'>//! to something like `/var/www/html` or change it in the config file.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Naming paths - Never end a path with &#39;/&#39; but you can begin one with it. For example, do not</span>
+<span class='doccomment'>//! use this: `/home/me/server/` but you can use something like this: `/home/me/server`. If &#39;/&#39; is</span>
+<span class='doccomment'>//! required at the end then the server will add it for you.</span>
+<span class='doccomment'>//!</span>
+
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>futures</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>num_cpus</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>pretty_env_logger</span>;
@@ -318,18 +429,19 @@
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rustc_serialize</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>multipart</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>mime_guess</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>daemonize</span>;
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span> <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>log</span>;
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span> <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>clap</span>;
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span> <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>mime</span>;
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span> <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>lsio</span>;
-<span class='attribute'>#[<span class='ident'>macro_use</span>]</span> <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>slog</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>slog_term</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>aws_sdk_rust</span>;
 
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>tokio_http2</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>tokio_proto</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>tokio_service</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>tokio_core</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>tokio_tls</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>native_tls</span>;
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>env</span>;
@@ -337,12 +449,16 @@
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>convert</span>::<span class='ident'>AsRef</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>time</span>::<span class='ident'>Duration</span>;
 
+<span class='kw'>use</span> <span class='ident'>daemonize</span>::{<span class='ident'>Daemonize</span>};
+
 <span class='kw'>use</span> <span class='ident'>futures</span>::<span class='ident'>future</span>;
 <span class='kw'>use</span> <span class='ident'>tokio_proto</span>::<span class='ident'>TcpServer</span>;
-<span class='comment'>// use tokio_http2::TcpServer;</span>
 <span class='kw'>use</span> <span class='ident'>tokio_service</span>::<span class='ident'>Service</span>;
 <span class='kw'>use</span> <span class='ident'>tokio_core</span>::<span class='ident'>net</span>::<span class='ident'>TcpStream</span>;
+<span class='kw'>use</span> <span class='ident'>tokio_tls</span>::{<span class='ident'>TlsConnectorExt</span>, <span class='ident'>TlsAcceptorExt</span>};
 <span class='kw'>use</span> <span class='ident'>tokio_http2</span>::<span class='ident'>http</span>::{<span class='ident'>Request</span>, <span class='ident'>Response</span>, <span class='ident'>HttpProto</span>};
+<span class='kw'>use</span> <span class='ident'>tokio_http2</span>::{<span class='ident'>Router</span>, <span class='ident'>Route</span>, <span class='ident'>RouterBuilder</span>, <span class='ident'>Method</span>};
+<span class='kw'>use</span> <span class='ident'>tokio_http2</span>::<span class='ident'>logger</span>::{<span class='ident'>Logger</span>, <span class='ident'>LoggerLevel</span>};
 
 <span class='kw'>use</span> <span class='ident'>clap</span>::<span class='ident'>Shell</span>;
 <span class='kw'>use</span> <span class='ident'>url</span>::<span class='ident'>Url</span>;
@@ -357,7 +473,7 @@
 <span class='kw'>use</span> <span class='ident'>aws_sdk_rust</span>::<span class='ident'>aws</span>::<span class='ident'>common</span>::<span class='ident'>request</span>::<span class='ident'>DispatchSignedRequest</span>;
 
 <span class='kw'>use</span> <span class='ident'>routes</span>::<span class='ident'>routes</span>;
-<span class='kw'>use</span> <span class='ident'>slog</span>::<span class='ident'>DrainExt</span>;
+<span class='kw'>use</span> <span class='ident'>handlers</span>::<span class='ident'>handlers</span>;
 
 <span class='kw'>mod</span> <span class='ident'>cli</span>;
 <span class='kw'>mod</span> <span class='ident'>config</span>;
@@ -365,8 +481,9 @@
 <span class='kw'>mod</span> <span class='ident'>http</span>;
 <span class='kw'>mod</span> <span class='ident'>files</span>;
 <span class='kw'>mod</span> <span class='ident'>api</span>;
+<span class='kw'>mod</span> <span class='ident'>handlers</span>;
 
-<span class='comment'>// Used for outbound calls.</span>
+<span class='comment'>// Used for outbound S3 calls (if used).</span>
 <span class='kw'>static</span> <span class='ident'>DEFAULT_USER_AGENT</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;static</span> <span class='ident'>str</span> <span class='op'>=</span> <span class='macro'>concat</span><span class='macro'>!</span>(<span class='macro'>env</span><span class='macro'>!</span>(<span class='string'>&quot;CARGO_PKG_NAME&quot;</span>), <span class='string'>&quot;/&quot;</span>, <span class='macro'>env</span><span class='macro'>!</span>(<span class='string'>&quot;CARGO_PKG_VERSION&quot;</span>));
 
 <span class='comment'>// Make generic so as to be easier to create new servers...</span>
@@ -381,39 +498,24 @@
     <span class='kw'>type</span> <span class='ident'>Future</span> <span class='op'>=</span> <span class='ident'>future</span>::<span class='prelude-val'>Ok</span><span class='op'>&lt;</span><span class='ident'>Response</span>, <span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span>;
 
     <span class='kw'>fn</span> <span class='ident'>call</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='kw-2'>mut</span> <span class='ident'>req</span>: <span class='ident'>Request</span>) <span class='op'>-&gt;</span> <span class='self'>Self</span>::<span class='ident'>Future</span> {
-
-        <span class='comment'>// Testing block begin...</span>
-        <span class='comment'>// match req.remote_addr() {</span>
-        <span class='comment'>//     Some(remote_addr) =&gt; println!(&quot;{}&quot;, remote_addr),</span>
-        <span class='comment'>//     _ =&gt; println!(&quot;N/A&quot;),</span>
-        <span class='comment'>// }</span>
-
-        <span class='comment'>// println!(&quot;{:?}&quot;, req);</span>
-
-        <span class='comment'>// static mut gc: u16 = 1;</span>
-        <span class='comment'>// unsafe {</span>
-        <span class='comment'>//     println!(&quot;{}&quot;, gc);</span>
-        <span class='comment'>//     gc += 1;</span>
-        <span class='comment'>// }</span>
-        <span class='comment'>// Testing block end...</span>
-
-        <span class='ident'>future</span>::<span class='ident'>ok</span>(<span class='ident'>routes</span>(<span class='ident'>req</span>))
+        <span class='kw'>match</span> <span class='ident'>req</span>.<span class='ident'>handler</span>() {
+            <span class='prelude-val'>Some</span>(<span class='ident'>handler</span>) <span class='op'>=&gt;</span> <span class='ident'>future</span>::<span class='ident'>ok</span>(<span class='ident'>handler</span>(<span class='ident'>req</span>)),
+            <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>future</span>::<span class='ident'>ok</span>(<span class='ident'>routes</span>(<span class='ident'>req</span>)),
+        }
     }
 }
 
 <span class='kw'>fn</span> <span class='ident'>main</span>() {
-    <span class='ident'>pretty_env_logger</span>::<span class='ident'>init</span>();
+    <span class='ident'>pretty_env_logger</span>::<span class='ident'>init</span>(); <span class='comment'>// Used for lower level libaries that use env_logger.</span>
     <span class='kw'>let</span> <span class='ident'>app</span> <span class='op'>=</span> <span class='macro'>env</span><span class='macro'>!</span>(<span class='string'>&quot;CARGO_PKG_NAME&quot;</span>);
     <span class='kw'>let</span> <span class='ident'>config_dir</span> <span class='op'>=</span> <span class='string'>&quot;/etc/lsio&quot;</span>;
     <span class='kw'>let</span> <span class='ident'>version</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}&quot;</span>, <span class='macro'>crate_version</span><span class='macro'>!</span>());
-
-    <span class='kw'>let</span> <span class='ident'>drain</span> <span class='op'>=</span> <span class='ident'>slog_term</span>::<span class='ident'>streamer</span>().<span class='ident'>build</span>().<span class='ident'>fuse</span>();
-    <span class='kw'>let</span> <span class='ident'>root_logger</span> <span class='op'>=</span> <span class='ident'>slog</span>::<span class='ident'>Logger</span>::<span class='ident'>root</span>(<span class='ident'>drain</span>, <span class='macro'>o</span><span class='macro'>!</span>(<span class='string'>&quot;version&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>version</span>.<span class='ident'>clone</span>()));
 
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>is_quiet</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='bool-val'>false</span>;
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>is_time</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='bool-val'>false</span>;
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>is_bench</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='bool-val'>false</span>;
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>is_bucket_virtual</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='bool-val'>true</span>;
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>is_daemonize</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='bool-val'>true</span>;
 
     <span class='kw'>let</span> <span class='ident'>matches</span> <span class='op'>=</span> <span class='ident'>cli</span>::<span class='ident'>build_cli</span>(<span class='ident'>app</span>, <span class='ident'>config_dir</span>, <span class='kw-2'>&amp;</span><span class='ident'>version</span>).<span class='ident'>get_matches</span>();
 
@@ -436,6 +538,11 @@
     <span class='comment'>// If the -h or --bucket-virtual-host flag was passed then track operation time</span>
     <span class='kw'>if</span> <span class='ident'>matches</span>.<span class='ident'>is_present</span>(<span class='string'>&quot;bucket-virtual-host&quot;</span>) {
         <span class='ident'>is_bucket_virtual</span> <span class='op'>=</span> <span class='bool-val'>false</span>;
+    }
+
+    <span class='comment'>// If the -d or --daemonize flag was passed then run server in foreground</span>
+    <span class='kw'>if</span> <span class='ident'>matches</span>.<span class='ident'>is_present</span>(<span class='string'>&quot;daemonize&quot;</span>) {
+        <span class='ident'>is_daemonize</span> <span class='op'>=</span> <span class='bool-val'>false</span>;
     }
 
     <span class='comment'>// NOTE: Get parameters or config for region, signature etc</span>
@@ -462,9 +569,14 @@
     <span class='kw'>let</span> <span class='ident'>proxy_str</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;proxy&quot;</span>);
     <span class='kw'>let</span> <span class='ident'>signature_str</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;signature&quot;</span>);
     <span class='kw'>let</span> <span class='ident'>bench</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;bench&quot;</span>);
-    <span class='kw'>let</span> <span class='ident'>user_agent</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;user-agent&quot;</span>).<span class='ident'>unwrap_or</span>(<span class='ident'>DEFAULT_USER_AGENT</span>);
+    <span class='kw'>let</span> <span class='ident'>user_agent</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;user-agent&quot;</span>).<span class='ident'>unwrap_or</span>(<span class='ident'>DEFAULT_USER_AGENT</span>); <span class='comment'>// Used for outbound calls</span>
     <span class='kw'>let</span> <span class='ident'>ip</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;ip&quot;</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;127.0.0.1&quot;</span>);
     <span class='kw'>let</span> <span class='ident'>port</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;port&quot;</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;8000&quot;</span>);
+    <span class='kw'>let</span> <span class='ident'>log_loc</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;log&quot;</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;/var/log&quot;</span>);
+    <span class='kw'>let</span> <span class='ident'>pid</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;pid&quot;</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;/var/run&quot;</span>);
+    <span class='kw'>let</span> <span class='ident'>run_as_user</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;run-as-user&quot;</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;nobody&quot;</span>);
+    <span class='kw'>let</span> <span class='ident'>run_in_group</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;run-in-group&quot;</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;daemon&quot;</span>);
+    <span class='kw'>let</span> <span class='ident'>base_path</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;base-path&quot;</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;public&quot;</span>); <span class='comment'>// Default &#39;public&#39; means &#39;public&#39; is relative to this app&#39;s location.</span>
 
     <span class='comment'>// Override some parameters when bench is specified...</span>
     <span class='kw'>if</span> <span class='ident'>bench</span>.<span class='ident'>is_some</span>() {
@@ -477,12 +589,14 @@
     <span class='kw'>let</span> <span class='ident'>config_dir</span> <span class='op'>=</span> <span class='ident'>matches</span>.<span class='ident'>value_of</span>(<span class='string'>&quot;config&quot;</span>).<span class='ident'>unwrap</span>();
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>config_file</span> <span class='op'>=</span> <span class='ident'>PathBuf</span>::<span class='ident'>new</span>();
 
+    <span class='comment'>// NOTE: May want to change the config name and location later...</span>
     <span class='kw'>if</span> <span class='ident'>config_dir</span>.<span class='ident'>is_empty</span>() {
         <span class='ident'>config_file</span>.<span class='ident'>push</span>(<span class='string'>&quot;/etc/lsio/config&quot;</span>);
     } <span class='kw'>else</span> {
-        <span class='ident'>config_file</span>.<span class='ident'>push</span>(<span class='ident'>config_dir</span>);
+        <span class='ident'>config_file</span>.<span class='ident'>push</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}&quot;</span>, <span class='ident'>config_dir</span>, <span class='string'>&quot;config&quot;</span>));
     }
 
+    <span class='comment'>// Config file location has a default of /etc/lsio/config but it can be changed</span>
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>config</span> <span class='op'>=</span> <span class='ident'>config</span>::<span class='ident'>Config</span>::<span class='ident'>from_file</span>(<span class='ident'>config_file</span>).<span class='ident'>unwrap_or</span>(<span class='ident'>config</span>::<span class='ident'>Config</span>::<span class='ident'>default</span>());
 
     <span class='comment'>// Let CLI args override any config setting if they exists.</span>
@@ -515,15 +629,67 @@
     <span class='comment'>//</span>
     <span class='comment'>// let mut s3client = S3Client::new(provider, endpoint);</span>
 
+    <span class='comment'>// Daemonize is used to aid in the process of creating a daemonized server for Linux based</span>
+    <span class='comment'>// systems. It also works for OSX. By default some of the options will require a high</span>
+    <span class='comment'>// security setting but you can specify config or command line options to override those defaults.</span>
+    <span class='comment'>// The primary defaults that may cause a permissions issue are:</span>
+    <span class='comment'>// 1. -d (specify this and daemonize will not even execute)</span>
+    <span class='comment'>// 2. -l (give a new log file location)</span>
+    <span class='comment'>// 3. If you do want daemonize then pay attention to PID file location, USER and GROUP</span>
+    <span class='kw'>if</span> <span class='ident'>is_daemonize</span> {
+        <span class='comment'>// Pull some of these values from the config and/or cli</span>
+        <span class='kw'>let</span> <span class='ident'>daemonize</span> <span class='op'>=</span> <span class='ident'>Daemonize</span>::<span class='ident'>new</span>()
+            .<span class='ident'>pid_file</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}.pid&quot;</span>, <span class='ident'>pid</span>, <span class='ident'>app</span>)) <span class='comment'>// Every method except `new` and `start`</span>
+            .<span class='ident'>chown_pid_file</span>(<span class='bool-val'>true</span>)      <span class='comment'>// is optional, see `Daemonize` documentation</span>
+            .<span class='ident'>working_directory</span>(<span class='string'>&quot;/tmp&quot;</span>) <span class='comment'>// for default behaviour.</span>
+            .<span class='ident'>user</span>(<span class='ident'>run_as_user</span>)
+            .<span class='ident'>group</span>(<span class='ident'>run_in_group</span>) <span class='comment'>// Group name</span>
+            .<span class='ident'>group</span>(<span class='number'>2</span>)        <span class='comment'>// or group id.</span>
+            .<span class='ident'>umask</span>(<span class='number'>0o777</span>)    <span class='comment'>// Set umask, `0o027` by default.</span>
+            .<span class='ident'>privileged_action</span>(<span class='op'>||</span> <span class='string'>&quot;Executed before drop privileges&quot;</span>);
+
+        <span class='kw'>match</span> <span class='ident'>daemonize</span>.<span class='ident'>start</span>() {
+            <span class='prelude-val'>Ok</span>(_) <span class='op'>=&gt;</span> <span class='macro'>info</span><span class='macro'>!</span>(<span class='string'>&quot;Success, daemonized&quot;</span>),
+            <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>error</span><span class='macro'>!</span>(<span class='string'>&quot;{}&quot;</span>, <span class='ident'>e</span>),
+        }
+    }
+
+    <span class='doccomment'>/// Logger is the container of the logging functions. This gets passed to HttpProto.</span>
+    <span class='doccomment'>/// Running the server using -d (--daemonize) option will run it in the foreground so logging</span>
+    <span class='doccomment'>/// output will show in the terminal window in addition to the normal log file.</span>
+    <span class='kw'>let</span> <span class='ident'>logger</span> <span class='op'>=</span> <span class='ident'>Logger</span>::<span class='ident'>new</span>(<span class='prelude-val'>Some</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/{}.log&quot;</span>, <span class='ident'>log_loc</span>, <span class='ident'>app</span>)));
+
+    <span class='comment'>// TODO: Need ability to re-read config and set options.</span>
+
+    <span class='doccomment'>/// Router is the container of all of the routes which includes the Handler. The Handler</span>
+    <span class='doccomment'>/// the function that gets called for a specific route (req::path()) for a given Method.</span>
+    <span class='doccomment'>/// If the req::handler() is None then the server will use it&#39;s default route. If the hander</span>
+    <span class='doccomment'>/// returns a valid handler then it will be called instead of the server&#39;s default route.</span>
+
+    <span class='kw'>let</span> <span class='ident'>router_builder</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>RouterBuilder</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>handlers</span>();
+
+    <span class='doccomment'>/// HttpProto has state. You can pass in options to HttpProto and then pass it to HttpCodec and</span>
+    <span class='doccomment'>/// then on to decode. The tokio_http2::http::mod.rs file contains HttpProto and HttpCodec.</span>
+    <span class='doccomment'>/// To add your custom items to that simply copy those two structs and make mods or wrap them.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// If you don&#39;t want any custom route handlers then set the `router` value to None.</span>
+
+    <span class='kw'>let</span> <span class='ident'>http_proto</span> <span class='op'>=</span> <span class='ident'>HttpProto</span>{ <span class='ident'>router</span>: <span class='kw'>if</span> <span class='ident'>router_builder</span>.<span class='ident'>is_some</span>() {<span class='prelude-val'>Some</span>(<span class='ident'>router_builder</span>.<span class='ident'>unwrap</span>().<span class='ident'>build</span>())} <span class='kw'>else</span> {<span class='prelude-val'>None</span>},
+                                <span class='ident'>logger</span>: <span class='prelude-val'>Some</span>(<span class='ident'>logger</span>.<span class='ident'>clone</span>()),
+                                <span class='ident'>base_path</span>: <span class='ident'>base_path</span>.<span class='ident'>to_string</span>(),
+                              };
+
     <span class='kw'>let</span> <span class='ident'>addr</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}:{}&quot;</span>, <span class='ident'>ip</span>, <span class='ident'>port</span>);
     <span class='kw'>let</span> <span class='ident'>addr</span> <span class='op'>=</span> <span class='ident'>addr</span>.<span class='ident'>parse</span>().<span class='ident'>unwrap</span>();
-    <span class='comment'>// println!(&quot;{} - listening on http://{}&quot;, app, addr);</span>
-    <span class='macro'>info</span><span class='macro'>!</span>(<span class='ident'>root_logger</span>, <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;Application started and listening at: {}&quot;</span>, <span class='ident'>addr</span>));
 
-    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>srv</span> <span class='op'>=</span> <span class='ident'>TcpServer</span>::<span class='ident'>new</span>(<span class='ident'>HttpProto</span>, <span class='ident'>addr</span>);
-    <span class='comment'>// TODO: May want to add router to TcpServer by pulling in proto::TcpServer into our own in library</span>
-    <span class='ident'>srv</span>.<span class='ident'>threads</span>(<span class='ident'>num_cpus</span>::<span class='ident'>get</span>());
-    <span class='ident'>srv</span>.<span class='ident'>serve</span>(<span class='op'>||</span> <span class='prelude-val'>Ok</span>(<span class='ident'>HttpService</span>)); <span class='comment'>// Could do closure here...</span>
+    <span class='comment'>// Create the initial App loading message.</span>
+    <span class='ident'>logger</span>.<span class='ident'>write</span>(<span class='ident'>LoggerLevel</span>::<span class='ident'>Info</span>, <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;Application started and listening at: {}, version: {}&quot;</span>, <span class='ident'>addr</span>, <span class='ident'>version</span>.<span class='ident'>clone</span>()));
+
+    <span class='doccomment'>/// TcpServer is the core of the server. It takes http_proto, number of cpus and HttpService as</span>
+    <span class='doccomment'>/// input and then begins it&#39;s magic!</span>
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>srv</span> <span class='op'>=</span> <span class='ident'>TcpServer</span>::<span class='ident'>new</span>(<span class='ident'>http_proto</span>, <span class='ident'>addr</span>);
+    <span class='ident'>srv</span>.<span class='ident'>threads</span>(<span class='ident'>num_cpus</span>::<span class='ident'>get</span>()); <span class='comment'>// Creates listening threads based on the number of CPUs</span>
+    <span class='ident'>srv</span>.<span class='ident'>serve</span>(<span class='op'>||</span> <span class='prelude-val'>Ok</span>(<span class='ident'>HttpService</span>)); <span class='comment'>// Could do closure here instead of the full Service above</span>
 }
 </pre>
 </section>
