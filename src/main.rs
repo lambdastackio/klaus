@@ -65,7 +65,7 @@ extern crate daemonize;
 #[macro_use] extern crate clap;
 #[macro_use] extern crate mime;
 #[macro_use] extern crate lsio;
-extern crate aws_sdk_rust;
+// extern crate aws_sdk_rust;
 
 extern crate tokio_http2;
 extern crate tokio_proto;
@@ -96,12 +96,12 @@ use url::Url;
 
 use lsio::config::ConfigFile;
 
-use aws_sdk_rust::aws::errors::s3::S3Error;
-use aws_sdk_rust::aws::s3::endpoint::*;
-use aws_sdk_rust::aws::s3::s3client::S3Client;
-use aws_sdk_rust::aws::common::region::Region;
-use aws_sdk_rust::aws::common::credentials::{AwsCredentialsProvider, DefaultCredentialsProviderSync};
-use aws_sdk_rust::aws::common::request::DispatchSignedRequest;
+// use aws_sdk_rust::aws::errors::s3::S3Error;
+// use aws_sdk_rust::aws::s3::endpoint::*;
+// use aws_sdk_rust::aws::s3::s3client::S3Client;
+// use aws_sdk_rust::aws::common::region::Region;
+// use aws_sdk_rust::aws::common::credentials::{AwsCredentialsProvider, DefaultCredentialsProviderSync};
+// use aws_sdk_rust::aws::common::request::DispatchSignedRequest;
 
 use routes::routes;
 use handlers::handlers;
@@ -180,20 +180,20 @@ fn main() {
     // Safe to unwrap since a default value is passed in. If a panic occurs then the environment
     // does not support a home directory.
 
-    let region = match matches.value_of("region").unwrap().to_string().to_lowercase().as_ref() {
-        "uswest1" => Region::UsWest1,
-        "uswest2" => Region::UsWest2,
-        "cnnorth1" => Region::CnNorth1,
-        "eucentral1" => Region::EuCentral1,
-        "euwest1" => Region::EuWest1,
-        "saeast1" => Region::SaEast1,
-        "apnortheast1" => Region::ApNortheast1,
-        "apnortheast2" => Region::ApNortheast2,
-        "apsouth1" => Region::ApSouth1,
-        "apsoutheast1" => Region::ApSoutheast1,
-        "apsoutheast2" => Region::ApSoutheast2,
-        _ => Region::UsEast1,
-    };
+    // let region = match matches.value_of("region").unwrap().to_string().to_lowercase().as_ref() {
+    //     "uswest1" => Region::UsWest1,
+    //     "uswest2" => Region::UsWest2,
+    //     "cnnorth1" => Region::CnNorth1,
+    //     "eucentral1" => Region::EuCentral1,
+    //     "euwest1" => Region::EuWest1,
+    //     "saeast1" => Region::SaEast1,
+    //     "apnortheast1" => Region::ApNortheast1,
+    //     "apnortheast2" => Region::ApNortheast2,
+    //     "apsouth1" => Region::ApSouth1,
+    //     "apsoutheast1" => Region::ApSoutheast1,
+    //     "apsoutheast2" => Region::ApSoutheast2,
+    //     _ => Region::UsEast1,
+    // };
 
     // Option so None will be return if nothing is passed in.
     let ep_str = matches.value_of("endpoint");

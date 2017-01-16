@@ -15,7 +15,7 @@ multipart uploads.
 
 [dependencies]
 lsio = "0.1"
-aws-sdk-rust = "0.1"
+# aws-sdk-rust = "0.1"
 futures = "0.1"
 log = "0.3"
 net2 = "0.2"
