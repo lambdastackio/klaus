@@ -1,8 +1,9 @@
 target
 output.txt
 .cargo
-public
+/public
 Cargo.lock
 *.log
 favicon.ico
 my.json
+*.zip

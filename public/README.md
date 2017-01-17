@@ -1,22 +1,23 @@
-Quick Start
-===========
+## SB Admin rewritten in Bootstrap 4
 
-1. Install or Upgrade Node.js and NPM
-    - visit https://nodejs.org/en/download/ and download and install the latest stable version of node. NPM will be updated with the install.
+## Charts used:
+####1. [Flot Charts](http://www.flotcharts.org/)
 
-2. While in the root folder of the project run 
-    >sudo npm i 
-   This will install all the dependencies for the project.
+####2. [Morris Charts](http://morrisjs.github.io/morris.js/)
 
-3. Run
-    >npm start
-   and open http://localhost:5050 in the browser
 
-4. Congrats your up in running. Editting any JS file will trigger a hot reload.
+This project is a port of the famous Free Admin Bootstrap Theme [SB Admin](http://blackrockdigital.github.io/startbootstrap-sb-admin/).
 
-5. visit http://localhost:5050/docs for more details.
+Find out more [Themes at StrapUI.com](http://www.strapui.com/).
 
-6. To switch to dark theme run 
-  >grunt dark
+## Installation
+####1. Clone this project or Download that ZIP file
 
-Thanks! 
+```sh
+$ git clone https://github.com/sahusoftcom/sb-admin-bs4.git
+```
+
+####2.  Plugins 
+
+Make sure you have [font awesome] (https://fortawesome.github.io/Font-Awesome/)
+
