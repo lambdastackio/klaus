@@ -19,15 +19,15 @@ use tokio_http2::http::{Request, Response};
 use routes::routes;
 
 /// Handlers - Top level function to build routes
-pub fn handlers() -> Option<RouterBuilder> {
+pub fn handlers(base_path: String) -> Option<RouterBuilder> {
     None
     // Some(RouterBuilder::new().add(Route::get(r"/index2.html").using(test_handler)))
 }
 
-fn test_handler(req: Request) -> Response {
+fn test_handler(req: Request, base_path: String) -> Response {
     if req.logger.is_some() {
         let logger = req.logger.clone().unwrap();
         logger.write(LoggerLevel::Warn, format!("Handler - line: {}, col: {}, mod: {}", line!(), column!(), module_path!()));
     }
-    routes(req)
+    routes(req, base_path)
 }

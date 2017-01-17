@@ -17,9 +17,7 @@ use tokio_http2::{StatusCode, Method};
 
 use http::*;
 
-pub fn routes(req: Request) -> Response {
-    let base_path = req.clone().base_path;
-
+pub fn routes(req: Request, base_path: String) -> Response {
     match req.method() {
         Method::Get | Method::Head => {
             // GET and HEAD are handled here...

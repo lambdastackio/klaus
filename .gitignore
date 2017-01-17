@@ -3,3 +3,6 @@ output.txt
 .cargo
 public
 Cargo.lock
+*.log
+favicon.ico
+my.json

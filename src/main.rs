@@ -118,8 +118,11 @@ mod handlers;
 static DEFAULT_USER_AGENT: &'static str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
 // Make generic so as to be easier to create new servers...
-#[derive(Clone, Copy, Debug)]
-struct HttpService;
+#[derive(Clone, Debug)]
+struct HttpService {
+    /// Base path is used to hold the actual base directory location on the server of the request.
+    base_path: String,
+}
 
 // Could put this into service_fn closure later...
 impl Service for HttpService {
@@ -130,8 +133,8 @@ impl Service for HttpService {
 
     fn call(&self, mut req: Request) -> Self::Future {
         match req.handler() {
-            Some(handler) => future::ok(handler(req)),
-            None => future::ok(routes(req)),
+            Some(handler) => future::ok(handler(req, self.base_path.clone())),
+            None => future::ok(routes(req, self.base_path.clone())),
         }
     }
 }
@@ -203,8 +206,8 @@ fn main() {
     let user_agent = matches.value_of("user-agent").unwrap_or(DEFAULT_USER_AGENT); // Used for outbound calls
     let ip = matches.value_of("ip").unwrap_or("127.0.0.1");
     let port = matches.value_of("port").unwrap_or("8000");
-    let log_loc = matches.value_of("log").unwrap_or("/var/log");
-    let pid = matches.value_of("pid").unwrap_or("/var/run");
+    let log_loc = matches.value_of("log").unwrap_or("/tmp");  // The default from the cli.rs should be present else this default
+    let pid = matches.value_of("pid").unwrap_or("/tmp");  // The default from the cli.rs should be present else this default
     let run_as_user = matches.value_of("run-as-user").unwrap_or("nobody");
     let run_in_group = matches.value_of("run-in-group").unwrap_or("daemon");
     let base_path = matches.value_of("base-path").unwrap_or("public"); // Default 'public' means 'public' is relative to this app's location.
@@ -270,7 +273,7 @@ fn main() {
     if is_daemonize {
         // Pull some of these values from the config and/or cli
         let daemonize = Daemonize::new()
-            .pid_file(&format!("{}/{}.pid", pid, app)) // Every method except `new` and `start`
+            .pid_file(&format!("{}/{}.pid", /*pid*/ ".", app)) // Every method except `new` and `start`
             .chown_pid_file(true)      // is optional, see `Daemonize` documentation
             .working_directory("/tmp") // for default behaviour.
             .user(run_as_user)
@@ -288,6 +291,11 @@ fn main() {
     /// Logger is the container of the logging functions. This gets passed to HttpProto.
     /// Running the server using -d (--daemonize) option will run it in the foreground so logging
     /// output will show in the terminal window in addition to the normal log file.
+    ///
+    /// NB: Logging does impact TPS (Transactions Per Second). For the absolute fastest response,
+    /// set the HttpProto::logger to None which will disable logging. When both logging to a file
+    /// and logging to the terminal window, the TPS is impacted severely. However, file logging
+    /// only impacts a small amount.
     let logger = Logger::new(Some(&format!("{}/{}.log", log_loc, app)));
 
     // TODO: Need ability to re-read config and set options.
@@ -297,7 +305,7 @@ fn main() {
     /// If the req::handler() is None then the server will use it's default route. If the hander
     /// returns a valid handler then it will be called instead of the server's default route.
 
-    let router_builder: Option<RouterBuilder> = handlers();
+    let router_builder: Option<RouterBuilder> = handlers("".to_string());
 
     /// HttpProto has state. You can pass in options to HttpProto and then pass it to HttpCodec and
     /// then on to decode. The tokio_http2::http::mod.rs file contains HttpProto and HttpCodec.
@@ -307,7 +315,6 @@ fn main() {
 
     let http_proto = HttpProto{ router: if router_builder.is_some() {Some(router_builder.unwrap().build())} else {None},
                                 logger: Some(logger.clone()),
-                                base_path: base_path.to_string(),
                               };
 
     let addr: &str = &format!("{}:{}", ip, port);
@@ -316,9 +323,20 @@ fn main() {
     // Create the initial App loading message.
     logger.write(LoggerLevel::Info, format!("Application started and listening at: {}, version: {}", addr, version.clone()));
 
+    let base = base_path.clone().to_string();
+
     /// TcpServer is the core of the server. It takes http_proto, number of cpus and HttpService as
     /// input and then begins it's magic!
     let mut srv = TcpServer::new(http_proto, addr);
     srv.threads(num_cpus::get()); // Creates listening threads based on the number of CPUs
-    srv.serve(|| Ok(HttpService)); // Could do closure here instead of the full Service above
+
+    /// HttpService is passed a base_path which represents the base folder location for the root
+    /// of the given site if static files are returned.
+    srv.serve(move || {
+        Ok(
+            HttpService{
+                base_path: format!("{}", base),
+            }
+        )
+    }); // Could do closure here instead of the full Service above
 }

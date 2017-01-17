@@ -29,11 +29,11 @@ term = "0.4"
 num_cpus = "1"
 regex = "0.1"
 rustc-serialize = "0"
-multipart = "0"
+multipart = { path = "../multipart" }
 mime = "0"
 mime_guess = "1"
 tokio-core = "0"
-tokio-http2 = "0"  #{ path = "../tokio-http2" }
+tokio-http2 = { path = "../tokio-http2" }
 tokio-proto = "0.1"
 tokio-service = "0.1"
 tokio-tls = "0"

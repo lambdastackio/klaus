@@ -54,8 +54,6 @@ pub fn read(path: &str) -> Result<FileBody, io::Error> {
     let path2 = Path::new(path);
     let ext: String;
 
-    println!("read - {:?}", path2);
-
     match path2.extension() {
         Some(s) => ext = s.to_str().unwrap_or("").to_string(),
         None => ext = "".to_string(),
