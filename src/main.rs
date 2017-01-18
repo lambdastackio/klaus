@@ -58,7 +58,7 @@ extern crate url;
 //extern crate filetime;
 extern crate toml;
 extern crate rustc_serialize;
-extern crate multipart;
+// extern crate multipart;
 extern crate mime_guess;
 extern crate daemonize;
 #[macro_use] extern crate log;
