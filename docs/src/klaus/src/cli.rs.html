@@ -27,7 +27,7 @@
     
 
     <nav class="sidebar">
-        <a href='../../../lsiohttps/index.html'><img src='https://lambdastackio.github.io/static/images/lambdastack-200x200.png' alt='logo' width='100'></a>
+        <a href='../../../klaus/index.html'><img src='https://lambdastackio.github.io/static/images/lambdastack-200x200.png' alt='logo' width='100'></a>
         
     </nav>
 
@@ -244,6 +244,45 @@
 <span id="200">200</span>
 <span id="201">201</span>
 <span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2016 LambdaStack All rights reserved.</span>
 <span class='comment'>//</span>
@@ -282,18 +321,22 @@
         .<span class='ident'>default_value</span>(<span class='ident'>config_dir</span>)
         .<span class='ident'>help</span>(<span class='string'>&quot;Sets a custom config file.&quot;</span>)
         .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
+    .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;daemonize&quot;</span>)
+        .<span class='ident'>short</span>(<span class='string'>&quot;d&quot;</span>)
+        .<span class='ident'>long</span>(<span class='string'>&quot;daemonize&quot;</span>)
+        .<span class='ident'>help</span>(<span class='string'>&quot;Overrides the default of TRUE for daemonization. Useful for server in foreground&quot;</span>))
     .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;endpoint&quot;</span>)
-       .<span class='ident'>short</span>(<span class='string'>&quot;e&quot;</span>)
-       .<span class='ident'>long</span>(<span class='string'>&quot;endpoint&quot;</span>)
-       .<span class='ident'>value_name</span>(<span class='string'>&quot;URL:&lt;port&gt;&quot;</span>)
-       .<span class='ident'>help</span>(<span class='string'>&quot;Outbound - Sets a custom endpoint URL:&lt;port&gt; (port is optional). Default is AWS default endpoints based on Region&quot;</span>)
-       .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
-    .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;ip&quot;</span>)
-        .<span class='ident'>short</span>(<span class='string'>&quot;i&quot;</span>)
-        .<span class='ident'>long</span>(<span class='string'>&quot;ip&quot;</span>)
-        .<span class='ident'>value_name</span>(<span class='string'>&quot;IP Address&quot;</span>)
-        .<span class='ident'>default_value</span>(<span class='string'>&quot;127.0.0.1&quot;</span>)
-        .<span class='ident'>help</span>(<span class='string'>&quot;Sets the IP Address&quot;</span>)
+        .<span class='ident'>short</span>(<span class='string'>&quot;e&quot;</span>)
+        .<span class='ident'>long</span>(<span class='string'>&quot;endpoint&quot;</span>)
+        .<span class='ident'>value_name</span>(<span class='string'>&quot;URL:&lt;port&gt;&quot;</span>)
+        .<span class='ident'>help</span>(<span class='string'>&quot;Outbound - Sets a custom endpoint URL:&lt;port&gt; (port is optional). Default is AWS default endpoints based on Region&quot;</span>)
+        .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
+    .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;base-path&quot;</span>)
+        .<span class='ident'>short</span>(<span class='string'>&quot;f&quot;</span>)
+        .<span class='ident'>long</span>(<span class='string'>&quot;base-path&quot;</span>)
+        .<span class='ident'>value_name</span>(<span class='string'>&quot;public&quot;</span>)
+        .<span class='ident'>default_value</span>(<span class='string'>&quot;public&quot;</span>)
+        .<span class='ident'>help</span>(<span class='string'>&quot;Location of the base path of where the site files are located. Default is &#39;public&#39; (relative to where app is located) but could be /var/www/html&quot;</span>)
         .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
     .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;generate-bash-completions&quot;</span>)
         .<span class='ident'>short</span>(<span class='string'>&quot;g&quot;</span>)
@@ -303,18 +346,47 @@
         .<span class='ident'>short</span>(<span class='string'>&quot;h&quot;</span>)
         .<span class='ident'>long</span>(<span class='string'>&quot;bucket-virtual-host&quot;</span>)
         .<span class='ident'>help</span>(<span class='string'>&quot;Overrides the default of TRUE for virtual buckets. Useful for non AWS environments&quot;</span>))
+    .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;ip&quot;</span>)
+        .<span class='ident'>short</span>(<span class='string'>&quot;i&quot;</span>)
+        .<span class='ident'>long</span>(<span class='string'>&quot;ip&quot;</span>)
+        .<span class='ident'>value_name</span>(<span class='string'>&quot;IP Address&quot;</span>)
+        .<span class='ident'>default_value</span>(<span class='string'>&quot;127.0.0.1&quot;</span>)
+        .<span class='ident'>help</span>(<span class='string'>&quot;Sets the IP Address&quot;</span>)
+        .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
+    .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;pid&quot;</span>)
+        .<span class='ident'>short</span>(<span class='string'>&quot;j&quot;</span>)
+        .<span class='ident'>long</span>(<span class='string'>&quot;pid&quot;</span>)
+        .<span class='ident'>value_name</span>(<span class='string'>&quot;PID file location&quot;</span>)
+        .<span class='ident'>default_value</span>(<span class='string'>&quot;/tmp&quot;</span>)<span class='comment'>//&quot;/var/run&quot;)</span>
+        .<span class='ident'>help</span>(<span class='string'>&quot;Overrides the default PID file location&quot;</span>)
+        .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
+    .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;run-as-user&quot;</span>)
+        .<span class='ident'>short</span>(<span class='string'>&quot;k&quot;</span>)
+        .<span class='ident'>long</span>(<span class='string'>&quot;run-as-user&quot;</span>)
+        .<span class='ident'>value_name</span>(<span class='string'>&quot;User to run as&quot;</span>)
+        .<span class='ident'>default_value</span>(<span class='string'>&quot;nobody&quot;</span>)
+        .<span class='ident'>help</span>(<span class='string'>&quot;Overrides the default user of &#39;nobody&#39; to run server as&quot;</span>)
+        .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
+    .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;log&quot;</span>)
+        .<span class='ident'>short</span>(<span class='string'>&quot;l&quot;</span>)
+        .<span class='ident'>long</span>(<span class='string'>&quot;log&quot;</span>)
+        .<span class='ident'>value_name</span>(<span class='string'>&quot;Log file location&quot;</span>)
+        .<span class='ident'>default_value</span>(<span class='string'>&quot;/tmp&quot;</span>)<span class='comment'>//&quot;/var/log&quot;)</span>
+        .<span class='ident'>help</span>(<span class='string'>&quot;Overrides the default log file location&quot;</span>)
+        .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
+    .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;run-in-group&quot;</span>)
+        .<span class='ident'>short</span>(<span class='string'>&quot;m&quot;</span>)
+        .<span class='ident'>long</span>(<span class='string'>&quot;run-in-group&quot;</span>)
+        .<span class='ident'>value_name</span>(<span class='string'>&quot;Belongs to group to run&quot;</span>)
+        .<span class='ident'>default_value</span>(<span class='string'>&quot;daemon&quot;</span>)
+        .<span class='ident'>help</span>(<span class='string'>&quot;Overrides the default group of &#39;daemon&#39; to run server in&quot;</span>)
+        .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
     .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;port&quot;</span>)
         .<span class='ident'>short</span>(<span class='string'>&quot;p&quot;</span>)
         .<span class='ident'>long</span>(<span class='string'>&quot;port&quot;</span>)
         .<span class='ident'>value_name</span>(<span class='string'>&quot;Port of IP Address&quot;</span>)
         .<span class='ident'>default_value</span>(<span class='string'>&quot;8000&quot;</span>)
         .<span class='ident'>help</span>(<span class='string'>&quot;Sets the port of the IP Address&quot;</span>)
-        .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
-    .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;proxy&quot;</span>)
-        .<span class='ident'>short</span>(<span class='string'>&quot;x&quot;</span>)
-        .<span class='ident'>long</span>(<span class='string'>&quot;proxy&quot;</span>)
-        .<span class='ident'>value_name</span>(<span class='string'>&quot;URL:&lt;port&gt;&quot;</span>)
-        .<span class='ident'>help</span>(<span class='string'>&quot;Outbound - Sets a custom proxy URL:&lt;port&gt;. Default is to use http(s)_proxy and no_proxy&quot;</span>)
         .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
     .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;quiet&quot;</span>)
         .<span class='ident'>short</span>(<span class='string'>&quot;q&quot;</span>)
@@ -344,6 +416,12 @@
         .<span class='ident'>value_name</span>(<span class='string'>&quot;User-agent&quot;</span>)
         .<span class='ident'>default_value</span>(<span class='ident'>DEFAULT_USER_AGENT</span>)
         .<span class='ident'>help</span>(<span class='string'>&quot;Outbound - Sets the user-agent string.&quot;</span>)
+        .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
+    .<span class='ident'>arg</span>(<span class='ident'>Arg</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;proxy&quot;</span>)
+        .<span class='ident'>short</span>(<span class='string'>&quot;x&quot;</span>)
+        .<span class='ident'>long</span>(<span class='string'>&quot;proxy&quot;</span>)
+        .<span class='ident'>value_name</span>(<span class='string'>&quot;URL:&lt;port&gt;&quot;</span>)
+        .<span class='ident'>help</span>(<span class='string'>&quot;Outbound - Sets a custom proxy URL:&lt;port&gt;. Default is to use http(s)_proxy and no_proxy&quot;</span>)
         .<span class='ident'>takes_value</span>(<span class='bool-val'>true</span>))
     .<span class='ident'>subcommand</span>(<span class='ident'>SubCommand</span>::<span class='ident'>with_name</span>(<span class='string'>&quot;bench&quot;</span>)
         .<span class='ident'>about</span>(<span class='string'>&quot;Benchmarking: lsiohttps bench &lt;command&gt; &lt;options&gt;&quot;</span>)
@@ -503,7 +581,7 @@
 
     <script>
         window.rootPath = "../../../";
-        window.currentCrate = "lsiohttps";
+        window.currentCrate = "klaus";
     </script>
     <script src="../../../jquery.js"></script>
     <script src="../../../main.js"></script>

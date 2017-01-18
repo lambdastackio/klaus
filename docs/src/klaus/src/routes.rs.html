@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `src/handlers.rs`.">
+    <meta name="description" content="Source to the Rust file `src/routes.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
-    <title>handlers.rs.html -- source</title>
+    <title>routes.rs.html -- source</title>
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
@@ -27,7 +27,7 @@
     
 
     <nav class="sidebar">
-        <a href='../../../httpd/index.html'><img src='https://lambdastackio.github.io/static/images/lambdastack-200x200.png' alt='logo' width='100'></a>
+        <a href='../../../klaus/index.html'><img src='https://lambdastackio.github.io/static/images/lambdastack-200x200.png' alt='logo' width='100'></a>
         
     </nav>
 
@@ -75,6 +75,16 @@
 <span id="31">31</span>
 <span id="32">32</span>
 <span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2016 LambdaStack All rights reserved.</span>
 <span class='comment'>//</span>
@@ -90,24 +100,34 @@
 <span class='comment'>// See the License for the specific language governing permissions and</span>
 <span class='comment'>// limitations under the License.</span>
 
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>allow</span>(<span class='ident'>dead_code</span>)]</span>  <span class='comment'>// Implement this for when you don&#39;t want warning for any of the functions below that you&#39;re not using.</span>
+<span class='kw'>use</span> <span class='ident'>tokio_http2</span>::<span class='ident'>http</span>::{<span class='ident'>Request</span>, <span class='ident'>Response</span>, <span class='ident'>HttpProto</span>};
+<span class='kw'>use</span> <span class='ident'>tokio_http2</span>::{<span class='ident'>StatusCode</span>, <span class='ident'>Method</span>};
 
-<span class='kw'>use</span> <span class='ident'>tokio_http2</span>::{<span class='ident'>Router</span>, <span class='ident'>Route</span>, <span class='ident'>RouterBuilder</span>, <span class='ident'>Logger</span>, <span class='ident'>LoggerLevel</span>};
-<span class='kw'>use</span> <span class='ident'>tokio_http2</span>::<span class='ident'>http</span>::{<span class='ident'>Request</span>, <span class='ident'>Response</span>};
-<span class='kw'>use</span> <span class='ident'>routes</span>::<span class='ident'>routes</span>;
+<span class='kw'>use</span> <span class='ident'>http</span>::<span class='op'>*</span>;
 
-<span class='doccomment'>/// Handlers - Top level function to build routes</span>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>handlers</span>() <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>RouterBuilder</span><span class='op'>&gt;</span> {
-    <span class='prelude-val'>None</span>
-    <span class='comment'>// Some(RouterBuilder::new().add(Route::get(r&quot;/index2.html&quot;).using(test_handler)))</span>
-}
-
-<span class='kw'>fn</span> <span class='ident'>test_handler</span>(<span class='ident'>req</span>: <span class='ident'>Request</span>) <span class='op'>-&gt;</span> <span class='ident'>Response</span> {
-    <span class='kw'>if</span> <span class='ident'>req</span>.<span class='ident'>logger</span>.<span class='ident'>is_some</span>() {
-        <span class='kw'>let</span> <span class='ident'>logger</span> <span class='op'>=</span> <span class='ident'>req</span>.<span class='ident'>logger</span>.<span class='ident'>clone</span>().<span class='ident'>unwrap</span>();
-        <span class='ident'>logger</span>.<span class='ident'>write</span>(<span class='ident'>LoggerLevel</span>::<span class='ident'>Warn</span>, <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;Handler - line: {}, col: {}, mod: {}&quot;</span>, <span class='macro'>line</span><span class='macro'>!</span>(), <span class='macro'>column</span><span class='macro'>!</span>(), <span class='macro'>module_path</span><span class='macro'>!</span>()));
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>routes</span>(<span class='ident'>req</span>: <span class='ident'>Request</span>, <span class='ident'>base_path</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='ident'>Response</span> {
+    <span class='kw'>match</span> <span class='ident'>req</span>.<span class='ident'>method</span>() {
+        <span class='ident'>Method</span>::<span class='ident'>Get</span> <span class='op'>|</span> <span class='ident'>Method</span>::<span class='ident'>Head</span> <span class='op'>=&gt;</span> {
+            <span class='comment'>// GET and HEAD are handled here...</span>
+            <span class='ident'>get_head</span>::<span class='ident'>route</span>(<span class='ident'>req</span>, <span class='ident'>base_path</span>)
+        },
+        <span class='ident'>Method</span>::<span class='ident'>Post</span> <span class='op'>=&gt;</span> {
+            <span class='ident'>post</span>::<span class='ident'>route</span>(<span class='ident'>req</span>, <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/uploads&quot;</span>, <span class='ident'>base_path</span>)) <span class='comment'>// NOTE: Change this hardcode of upload after testing...</span>
+        },
+        <span class='ident'>Method</span>::<span class='ident'>Put</span> <span class='op'>=&gt;</span> {
+            <span class='comment'>//NB: Test with post method for now</span>
+            <span class='ident'>post</span>::<span class='ident'>route</span>(<span class='ident'>req</span>, <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}/uploads&quot;</span>, <span class='ident'>base_path</span>)) <span class='comment'>// NOTE: Change this hardcode of upload after testing...</span>
+        },
+        <span class='ident'>Method</span>::<span class='ident'>Delete</span> <span class='op'>=&gt;</span> {
+            <span class='ident'>delete</span>::<span class='ident'>route</span>(<span class='ident'>req</span>)
+        },
+        _ <span class='op'>=&gt;</span> {
+            <span class='ident'>Response</span>::<span class='ident'>new</span>()
+                .<span class='ident'>with_header</span>(<span class='string'>&quot;Server&quot;</span>, <span class='string'>&quot;lsioHTTPS&quot;</span>)
+                .<span class='ident'>with_header</span>(<span class='string'>&quot;Content-Length&quot;</span>, <span class='string'>&quot;0&quot;</span>)
+                .<span class='ident'>with_status</span>(<span class='ident'>StatusCode</span>::<span class='ident'>NotImplemented</span>)
+        }
     }
-    <span class='ident'>routes</span>(<span class='ident'>req</span>)
 }
 </pre>
 </section>
@@ -165,7 +185,7 @@
 
     <script>
         window.rootPath = "../../../";
-        window.currentCrate = "httpd";
+        window.currentCrate = "klaus";
     </script>
     <script src="../../../jquery.js"></script>
     <script src="../../../main.js"></script>

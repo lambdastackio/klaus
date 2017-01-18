@@ -1,16 +1,16 @@
 [package]
-name = "httpd"
-version = "0.1.6"
+name = "klaus"
+version = "0.1.7"
 authors = ["Chris Jones"]
 license = "Apache-2.0"
 readme = "README.md"
 keywords = ["http", "https", "ceph", "tokio", "s3"]
-repository = "https://github.com/lambdastackio/httpd"
-homepage = "https://lambdastackio.github.io/httpd/httpd"
-documentation = "https://lambdastackio.github.io/httpd/httpd"
+repository = "https://github.com/lambdastackio/klaus"
+homepage = "https://lambdastackio.github.io/klaus/klaus"
+documentation = "https://lambdastackio.github.io/klaus/klaus"
 description = """
 HTTP/1.1 (HTTP/2 soon) Server that is built on Tokio Project Pipeline. It supports Asyn I/O (Futures), Pipelining and
-multipart uploads.
+multipart uploads. Hybrid solution that can be used as a Web Server, API Server, Agent, etc.
 """
 
 [dependencies]
@@ -29,11 +29,11 @@ term = "0.4"
 num_cpus = "1"
 regex = "0.1"
 rustc-serialize = "0"
-multipart = { path = "../multipart" }
+multipart = { path = "../../multipart" }
 mime = "0"
 mime_guess = "1"
 tokio-core = "0"
-tokio-http2 = { path = "../tokio-http2" }
+tokio-http2 = { path = "../../tokio-http2" }
 tokio-proto = "0.1"
 tokio-service = "0.1"
 tokio-tls = "0"

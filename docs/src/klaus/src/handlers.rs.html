@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `src/http/put.rs`.">
+    <meta name="description" content="Source to the Rust file `src/handlers.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
-    <title>put.rs.html -- source</title>
+    <title>handlers.rs.html -- source</title>
 
-    <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../../../../main.css">
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
     
 
     <link rel="shortcut icon" href="https://lambdastackio.github.io/static/images/favicon.ico">
@@ -27,7 +27,7 @@
     
 
     <nav class="sidebar">
-        <a href='../../../../httpd/index.html'><img src='https://lambdastackio.github.io/static/images/lambdastack-200x200.png' alt='logo' width='100'></a>
+        <a href='../../../klaus/index.html'><img src='https://lambdastackio.github.io/static/images/lambdastack-200x200.png' alt='logo' width='100'></a>
         
     </nav>
 
@@ -75,11 +75,6 @@
 <span id="31">31</span>
 <span id="32">32</span>
 <span id="33">33</span>
-<span id="34">34</span>
-<span id="35">35</span>
-<span id="36">36</span>
-<span id="37">37</span>
-<span id="38">38</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2016 LambdaStack All rights reserved.</span>
 <span class='comment'>//</span>
@@ -95,29 +90,24 @@
 <span class='comment'>// See the License for the specific language governing permissions and</span>
 <span class='comment'>// limitations under the License.</span>
 
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>allow</span>(<span class='ident'>dead_code</span>)]</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>allow</span>(<span class='ident'>dead_code</span>)]</span>  <span class='comment'>// Implement this for when you don&#39;t want warning for any of the functions below that you&#39;re not using.</span>
 
-<span class='kw'>use</span> <span class='ident'>tokio_http2</span>::<span class='ident'>http</span>::{<span class='ident'>Request</span>, <span class='ident'>Response</span>, <span class='ident'>HttpProto</span>};
-<span class='comment'>// use tokio_http2::server::{Request, Response};</span>
-<span class='comment'>// use tokio_http2::Method as Method;</span>
-<span class='kw'>use</span> <span class='ident'>tokio_http2</span>::<span class='ident'>StatusCode</span>;
+<span class='kw'>use</span> <span class='ident'>tokio_http2</span>::{<span class='ident'>Router</span>, <span class='ident'>Route</span>, <span class='ident'>RouterBuilder</span>, <span class='ident'>Logger</span>, <span class='ident'>LoggerLevel</span>};
+<span class='kw'>use</span> <span class='ident'>tokio_http2</span>::<span class='ident'>http</span>::{<span class='ident'>Request</span>, <span class='ident'>Response</span>};
+<span class='kw'>use</span> <span class='ident'>routes</span>::<span class='ident'>routes</span>;
 
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>route</span>(<span class='ident'>req</span>: <span class='ident'>Request</span>) <span class='op'>-&gt;</span> <span class='ident'>Response</span> {
-    <span class='ident'>Response</span>::<span class='ident'>new</span>()
-    <span class='comment'>// match req.path().unwrap_or(&quot;&quot;) {</span>
-    <span class='comment'>//     &quot;/echo&quot; =&gt; {</span>
-    <span class='comment'>//         let mut res = Response::new();</span>
-    <span class='comment'>//         if let Some(len) = req.headers().get::&lt;ContentLength&gt;() {</span>
-    <span class='comment'>//             res.headers_mut().set(len.clone());</span>
-    <span class='comment'>//         }</span>
-    <span class='comment'>//</span>
-    <span class='comment'>//         res.with_body(req.body())</span>
-    <span class='comment'>//     },</span>
-    <span class='comment'>//     _ =&gt; {</span>
-    <span class='comment'>//         Response::new()</span>
-    <span class='comment'>//             .with_status(StatusCode::NotFound)</span>
-    <span class='comment'>//     }</span>
-    <span class='comment'>// }</span>
+<span class='doccomment'>/// Handlers - Top level function to build routes</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>handlers</span>(<span class='ident'>base_path</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>RouterBuilder</span><span class='op'>&gt;</span> {
+    <span class='prelude-val'>None</span>
+    <span class='comment'>// Some(RouterBuilder::new().add(Route::get(r&quot;/index2.html&quot;).using(test_handler)))</span>
+}
+
+<span class='kw'>fn</span> <span class='ident'>test_handler</span>(<span class='ident'>req</span>: <span class='ident'>Request</span>, <span class='ident'>base_path</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='ident'>Response</span> {
+    <span class='kw'>if</span> <span class='ident'>req</span>.<span class='ident'>logger</span>.<span class='ident'>is_some</span>() {
+        <span class='kw'>let</span> <span class='ident'>logger</span> <span class='op'>=</span> <span class='ident'>req</span>.<span class='ident'>logger</span>.<span class='ident'>clone</span>().<span class='ident'>unwrap</span>();
+        <span class='ident'>logger</span>.<span class='ident'>write</span>(<span class='ident'>LoggerLevel</span>::<span class='ident'>Warn</span>, <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;Handler - line: {}, col: {}, mod: {}&quot;</span>, <span class='macro'>line</span><span class='macro'>!</span>(), <span class='macro'>column</span><span class='macro'>!</span>(), <span class='macro'>module_path</span><span class='macro'>!</span>()));
+    }
+    <span class='ident'>routes</span>(<span class='ident'>req</span>, <span class='ident'>base_path</span>)
 }
 </pre>
 </section>
@@ -174,11 +164,11 @@
     
 
     <script>
-        window.rootPath = "../../../../";
-        window.currentCrate = "httpd";
+        window.rootPath = "../../../";
+        window.currentCrate = "klaus";
     </script>
-    <script src="../../../../jquery.js"></script>
-    <script src="../../../../main.js"></script>
-    <script defer src="../../../../search-index.js"></script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    <script defer src="../../../search-index.js"></script>
 </body>
 </html>

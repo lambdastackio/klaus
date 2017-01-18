@@ -1,4 +1,7 @@
-## HTTPs Server
+## Klaus
+Powerful, fast and safe time saving server. API, Agent, HTTP(s), HTTP/2, RPC based server that can be used in any micro-services architecture.
+
+Based on Futures (promises), Async I/O that provides a very simple interface for application (server) developers while abstracting away the complex multi-threaded Futures Async I/O layers.
 
 (Currently) Install via Rust:
 #### Setting up on OSX

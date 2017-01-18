@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `lsiohttps` crate.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, lsiohttps">
+    <meta name="description" content="API documentation for the Rust `klaus` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, klaus">
 
-    <title>lsiohttps - Rust</title>
+    <title>klaus - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
@@ -27,8 +27,8 @@
     
 
     <nav class="sidebar">
-        <a href='../lsiohttps/index.html'><img src='https://lambdastackio.github.io/static/images/lambdastack-200x200.png' alt='logo' width='100'></a>
-        <p class='location'></p><script>window.sidebarCurrent = {name: 'lsiohttps', ty: 'mod', relpath: '../'};</script>
+        <a href='../klaus/index.html'><img src='https://lambdastackio.github.io/static/images/lambdastack-200x200.png' alt='logo' width='100'></a>
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'klaus', ty: 'mod', relpath: '../'};</script>
     </nav>
 
     <nav class="sub">
@@ -43,12 +43,38 @@
     </nav>
 
     <section id='main' class="content mod">
-<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>lsiohttps</a></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>klaus</a></span><span class='out-of-band'><span id='render-detail'>
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-0' class='srclink' href='../src/lsiohttps/src/main.rs.html#15-241' title='goto source code'>[src]</a></span></h1>
-</section>
+               </span><a id='src-0' class='srclink' href='../src/klaus/src/main.rs.html#15-342' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>HTTP/1.1:
+This crate is a full multithreaded Async I/O HTTPd Server that support multipart uploads, Pipelining and more.
+It can be used to implement your own HTTP server that allows for Rust Lambda like handlers.</p>
+
+<p>It can be used &quot;out of the box&quot; as a drop in replacement for a typical Web Server that handles
+static content or Single Page Applications like Angular and ReactJS.</p>
+
+<p>There are many additional features being added including the following:
+  1. TLS
+  2. HTTP/2 with Multiplexing
+  3. Web Socket protocol upgrading
+  4. Well defined configuration system - [Done]
+  5. More enhanced logging - [Done]
+  6. Builtin AWS/Ceph S3 interfaces - [Plumbing done]
+  7. gRPC/Protobuf</p>
+
+<p>Roadmap - The longer term goal is to create an application base that can also act as agent with
+the ability to move to different machines and reconfigure itself for a given role as needed.</p>
+
+<p>Base Path - The default of this <code>public</code> which means to look for a sub-directory called public
+under the directory where this application is located. Please change this passed in CLI value of -f
+to something like <code>/var/www/html</code> or change it in the config file.</p>
+
+<p>Naming paths - Never end a path with &#39;/&#39; but you can begin one with it. For example, do not
+use this: <code>/home/me/server/</code> but you can use something like this: <code>/home/me/server</code>. If &#39;/&#39; is
+required at the end then the server will add it for you.</p>
+</div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -103,7 +129,7 @@
 
     <script>
         window.rootPath = "../";
-        window.currentCrate = "lsiohttps";
+        window.currentCrate = "klaus";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>

@@ -27,7 +27,7 @@
     
 
     <nav class="sidebar">
-        <a href='../../../../httpd/index.html'><img src='https://lambdastackio.github.io/static/images/lambdastack-200x200.png' alt='logo' width='100'></a>
+        <a href='../../../../klaus/index.html'><img src='https://lambdastackio.github.io/static/images/lambdastack-200x200.png' alt='logo' width='100'></a>
         
     </nav>
 
@@ -119,8 +119,6 @@
 <span id="75">75</span>
 <span id="76">76</span>
 <span id="77">77</span>
-<span id="78">78</span>
-<span id="79">79</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2016 LambdaStack All rights reserved.</span>
 <span class='comment'>//</span>
@@ -177,8 +175,6 @@
 
     <span class='kw'>let</span> <span class='ident'>path2</span> <span class='op'>=</span> <span class='ident'>Path</span>::<span class='ident'>new</span>(<span class='ident'>path</span>);
     <span class='kw'>let</span> <span class='ident'>ext</span>: <span class='ident'>String</span>;
-
-    <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;read - {:?}&quot;</span>, <span class='ident'>path2</span>);
 
     <span class='kw'>match</span> <span class='ident'>path2</span>.<span class='ident'>extension</span>() {
         <span class='prelude-val'>Some</span>(<span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>ext</span> <span class='op'>=</span> <span class='ident'>s</span>.<span class='ident'>to_str</span>().<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>).<span class='ident'>to_string</span>(),
@@ -257,7 +253,7 @@
 
     <script>
         window.rootPath = "../../../../";
-        window.currentCrate = "httpd";
+        window.currentCrate = "klaus";
     </script>
     <script src="../../../../jquery.js"></script>
     <script src="../../../../main.js"></script>
